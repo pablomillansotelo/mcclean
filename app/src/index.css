@@ -1,0 +1,56 @@
+:root {
+  --font-main: "Inter", system-ui, -apple-system, sans-serif;
+  --color-text: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.6);
+  --color-accent: #007aff; /* macOS Blue */
+  --glass-bg: rgba(0, 0, 0, 0.2); /* Fallback or overlay */
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --app-region-drag: drag;
+  --app-region-no-drag: no-drag;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-main);
+  /* Transparent background to let native vibrancy show through */
+  background: transparent;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  user-select: none;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.draggable {
+  -webkit-app-region: drag;
+}
+.non-draggable {
+  -webkit-app-region: no-drag;
+}

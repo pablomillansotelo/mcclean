@@ -1,0 +1,65 @@
+/* Inheriting file-icon logic from App.css, but we can override or add to it */
+
+.secondary-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  color: white;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.secondary-button:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.secondary-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primary-button.danger {
+  background: #ef4444;
+}
+
+.primary-button.danger:hover {
+  background: #dc2626;
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Selection Styles */
+.file-item.selectable {
+    cursor: pointer;
+    border: 1px solid transparent; /* Reserve space */
+}
+
+.file-item.selected {
+    background: rgba(245, 158, 11, 0.1); /* Amber tint */
+    border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.file-item.selected .file-name {
+    color: #f59e0b;
+}
+
+/* Badge Style */
+.badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.6);
+}
