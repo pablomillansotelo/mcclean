@@ -45,13 +45,13 @@ function App() {
     try {
       // Parallel scan
       const [systemData, files, appsData, brewData, devData, startupData, privacyData] = await Promise.all([
-        window.electron.scanSystem(),
-        window.electron.startScan(""), // Empty string defaults to Home in backend
-        window.electron.scanApps(),
-        window.electron.scanBrew(),
-        window.electron.scanDevTools(),
-        window.electron.scanStartupItems(),
-        window.electron.scanPrivacy(),
+        window.electron.scanSystem().catch(e => { console.error("System scan error:", e); return []; }),
+        window.electron.startScan("").catch(e => { console.error("Files scan error:", e); return []; }),
+        window.electron.scanApps().catch(e => { console.error("Apps scan error:", e); return []; }),
+        window.electron.scanBrew().catch(e => { console.error("Brew scan error:", e); return []; }),
+        window.electron.scanDevTools().catch(e => { console.error("Dev scan error:", e); return []; }),
+        window.electron.scanStartupItems().catch(e => { console.error("Startup scan error:", e); return []; }),
+        window.electron.scanPrivacy().catch(e => { console.error("Privacy scan error:", e); return []; }),
       ]);
 
       setSystemItems(systemData || []);
