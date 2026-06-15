@@ -1,5 +1,6 @@
 import { Trash2, Code2, FolderX, AppWindow, HardDrive, Package } from "lucide-react";
 import { ScanResult } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface DevCleanerProps {
   data: ScanResult[];
@@ -7,8 +8,10 @@ interface DevCleanerProps {
 }
 
 export function DevCleaner({ data: items, setData: setItems }: DevCleanerProps) {
+  const { t } = useTranslation();
+
   const handleDelete = async (path: string) => {
-    if (confirm(`Move "${path}" to Trash?`)) {
+    if (confirm(t('devCleaner.confirmMove', { path }))) {
       const success = await window.electron.moveToTrash(path);
       if (success) {
         setItems((prev) => prev.filter((i) => i.path !== path));
@@ -21,8 +24,8 @@ export function DevCleaner({ data: items, setData: setItems }: DevCleanerProps) 
   return (
     <div className="view-container">
       <div className="view-header">
-        <h2>Developer Cleaner ({items.length})</h2>
-        <p className="text-sm text-white/50">Clean node_modules and venvs</p>
+        <h2>{t('devCleaner.title', { count: items.length })}</h2>
+        <p className="text-sm text-white/50">{t('devCleaner.subtitle')}</p>
       </div>
 
       <div className="file-list">
@@ -43,7 +46,7 @@ export function DevCleaner({ data: items, setData: setItems }: DevCleanerProps) 
                 {item.type && <div style={{ fontSize: "10px", opacity: 0.5, marginTop: "2px" }}>{item.type}</div>}
               </div>
               <div className="file-size">{(item.size / 1024 / 1024).toFixed(2)} MB</div>
-              <button className="action-btn delete-btn" onClick={() => handleDelete(item.path)} title="Move to Trash">
+              <button className="action-btn delete-btn" onClick={() => handleDelete(item.path)} title={t('devCleaner.moveToTrash')}>
                 <Trash2 size={16} />
               </button>
             </div>

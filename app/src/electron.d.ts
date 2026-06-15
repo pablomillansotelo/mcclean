@@ -26,6 +26,7 @@ export interface ElectronAPI {
   scanSystem: () => Promise<ScanResult[]>;
   scanDuplicates: (path?: string) => Promise<DuplicateGroup[]>;
   scanSpaceLens: () => Promise<ScanResult[]>;
+  analyzeDirectory: (path: string) => Promise<ScanResult[]>;
   getTrashSize: () => Promise<number>;
   moveToTrash: (path: string) => Promise<boolean>;
   getStoreValue: (key: string) => Promise<unknown>;

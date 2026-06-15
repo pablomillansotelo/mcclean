@@ -1,0 +1,142 @@
+{
+  "sidebar": {
+    "title": "mcclean",
+    "general": "GENERAL",
+    "overview": "Overview",
+    "settings": "Settings",
+    "cleaning": "CLEANING",
+    "cleanup": "System Junk",
+    "duplicates": "Duplicate Finder",
+    "largeFiles": "Large Files",
+    "spaceLens": "Space Lens",
+    "appsAndPrivacy": "APPS & PRIVACY",
+    "applications": "Applications",
+    "privacy": "Privacy",
+    "startup": "Startup Manager",
+    "devtools": "Dev Tools",
+    "homebrew": "Homebrew"
+  },
+  "dashboard": {
+    "status": "System Overview",
+    "readyToScan": "Ready to Scan",
+    "scanPrompt": "Scan your Mac to reclaim space.",
+    "startDeepScan": "Start Deep Scan",
+    "lastScan": "Last scan: {{date}}",
+    "systemJunk": "System Junk",
+    "itemsFound": "{{count}} items found",
+    "applications": "Applications",
+    "totalSize": "{{size}} MB total",
+    "homebrew": "Homebrew",
+    "packagesInstalled": "Packages installed",
+    "devJunk": "Developer Junk",
+    "downloadsBin": "Downloads Bin",
+    "files": "{{count}} files",
+    "largestFile": "Largest File Found",
+    "rescanSystem": "Rescan System",
+    "rescanning": "Rescanning...",
+    "scanNow": "Scan Now",
+    "cancel": "Cancel",
+    "scanning": "Scanning...",
+    "scanComplete": "Scan Complete",
+    "cleanNow": "Clean Now"
+  },
+  "cleanup": {
+    "systemJunk": "System Junk",
+    "largeFiles": "Large Files",
+    "duplicates": "Duplicates",
+    "cleanSelected": "Clean Selected",
+    "noItems": "No items found",
+    "fileName": "Name",
+    "fileSize": "Size",
+    "title": "Storage & Cleanup",
+    "subtitle": "Free up space by removing system junk, large files, and duplicates."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "systemDefault": "System Default",
+    "english": "English",
+    "spanish": "Spanish"
+  },
+  "systemCleaner": {
+    "title": "System Junk",
+    "rescan": "Rescan",
+    "cleanSelected": "Clean Selected",
+    "confirmDelete": "Are you sure you want to delete {{count}} system items? This cannot be undone.",
+    "warning": "These files are generally safe to delete, but clearing system caches may slow down your Mac temporarily while they rebuild. McClean protects critical files automatically.",
+    "scanning": "Scanning system locations...",
+    "noJunk": "No system junk found. Your Mac is clean!"
+  },
+  "largeFiles": {
+    "title": "Large Files",
+    "subtitle": "Files larger than 100MB",
+    "noFiles": "No large files found. Run a scan first.",
+    "trash": "Trash"
+  },
+  "duplicateFinder": {
+    "title": "Duplicate Finder",
+    "subtitle": "Find and remove identical files to free up space.",
+    "wastedSpace": "Wasted Space",
+    "scanPrompt": "Scan your Home folder for duplicate files.",
+    "startScan": "Start Scan",
+    "keepNewest": "Keep Newest",
+    "keepOldest": "Keep Oldest",
+    "trashSelected": "Trash Selected ({{size}})",
+    "copies": "{{count}} copies",
+    "each": "{{size}} each"
+  },
+  "applications": {
+    "title": "Applications ({{count}})",
+    "subtitle": "Manage installed applications",
+    "confirmUninstall": "Are you sure you want to move \"{{app}}\" to Trash?",
+    "foundAssociated": "Found {{count}} associated files (plist, caches) that can also be deleted.",
+    "confirmAssociated": "Do you want to delete the {{count}} associated files found?\n\n{{files}}",
+    "moveToTrash": "Move to Trash"
+  },
+  "homebrew": {
+    "title": "Homebrew Packages ({{count}})",
+    "subtitle": "Manage formulas and casks",
+    "confirmUninstall": "Uninstall Homebrew package \"{{name}}\"? This cannot be undone.",
+    "uninstallFailed": "Uninstall failed. Check console for details.",
+    "updating": "Updating...",
+    "updateBrew": "Update Homebrew",
+    "brewUpdated": "Homebrew updated!",
+    "showLeavesOnly": "Show Leaves Only",
+    "leaf": "LEAF",
+    "uninstall": "Uninstall"
+  },
+  "privacy": {
+    "title": "Privacy & Security",
+    "subtitle": "Manage browser data and app permissions",
+    "confirmClean": "Clear cache for {{name}}?",
+    "appPermissions": "App Permissions",
+    "appPermissionsDesc": "Manage Camera, Mic, and Location access in System Settings",
+    "browserCaches": "Browser Caches",
+    "clean": "Clean",
+    "allClean": "All browser caches are clean."
+  },
+  "startup": {
+    "title": "Startup Items ({{count}})",
+    "subtitle": "Manage applications that start automatically",
+    "noItems": "No LaunchAgents found in your user library."
+  },
+  "devCleaner": {
+    "title": "Developer Cleaner ({{count}})",
+    "subtitle": "Clean node_modules and venvs",
+    "confirmMove": "Move \"{{path}}\" to Trash?",
+    "moveToTrash": "Move to Trash"
+  },
+  "spaceLens": {
+    "title": "Space Lens",
+    "subtitle": "Visualize your storage usage",
+    "scanning": "Scanning...",
+    "scanFolder": "Scan Home Folder",
+    "clickScan": "Click Scan to visualize your Home folder."
+  },
+  "smartAssistant": {
+    "title": "Smart Assistant Suggestions",
+    "trashWarning": "Your Trash is large ({{size}} GB). Consider emptying it.",
+    "scanWarning": "It's been {{days}} days since your last cleanup scan.",
+    "neverScanned": "You have never run a cleanup scan. Consider starting one."
+  }
+}

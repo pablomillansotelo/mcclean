@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function formatBytes(bytes: number, decimals = 2) {
   if (!+bytes) return "0 Bytes";
@@ -24,6 +25,7 @@ export function DuplicateFinder() {
   const [results, setResults] = useState<DuplicateGroup[]>([]);
   const [progress, setProgress] = useState({ progress: 0, status: "" });
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
+  const { t } = useTranslation();
 
   const handleScan = () => {
     setScanning(true);
@@ -123,13 +125,13 @@ export function DuplicateFinder() {
     <div className="content-view fade-in">
       <div className="header-actions" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
         <div>
-          <h1>Duplicate Finder</h1>
-          <p className="subtitle">Find and remove identical files to free up space.</p>
+          <h1>{t('duplicateFinder.title')}</h1>
+          <p className="subtitle">{t('duplicateFinder.subtitle')}</p>
         </div>
         {!scanning && results.length > 0 && (
           <div style={{ textAlign: "right" }}>
             <div style={{ fontSize: "24px", fontWeight: "bold", color: "#ff3b30" }}>{formatBytes(totalWastedBytes)}</div>
-            <div style={{ fontSize: "12px", opacity: 0.7 }}>Wasted Space</div>
+            <div style={{ fontSize: "12px", opacity: 0.7 }}>{t('duplicateFinder.wastedSpace')}</div>
           </div>
         )}
       </div>
@@ -147,9 +149,9 @@ export function DuplicateFinder() {
           }}
         >
           <div style={{ fontSize: "48px", marginBottom: "20px" }}>👯‍♀️</div>
-          <p>Scan your Home folder for duplicate files.</p>
+          <p>{t('duplicateFinder.scanPrompt')}</p>
           <button className="primary-button" onClick={handleScan} style={{ marginTop: "20px" }}>
-            Start Scan
+            {t('duplicateFinder.startScan')}
           </button>
         </div>
       )}
@@ -167,15 +169,15 @@ export function DuplicateFinder() {
         <>
           <div className="toolbar" style={{ display: "flex", gap: "10px", marginBottom: "15px" }}>
             <button className="secondary-button" onClick={selectAllButNewest}>
-              Keep Newest
+              {t('duplicateFinder.keepNewest')}
             </button>
             <button className="secondary-button" onClick={selectAllButOldest}>
-              Keep Oldest
+              {t('duplicateFinder.keepOldest')}
             </button>
             <div style={{ flex: 1 }}></div>
             {selectedFiles.size > 0 && (
               <button className="danger-button" onClick={handleClean}>
-                Trash Selected ({formatBytes(selectedBytes)})
+                {t('duplicateFinder.trashSelected', { size: formatBytes(selectedBytes) })}
               </button>
             )}
           </div>
@@ -204,9 +206,9 @@ export function DuplicateFinder() {
                   }}
                 >
                   <span>
-                    {group.files.length} copies • {group.files[0].name}
+                    {t('duplicateFinder.copies', { count: group.files.length })} • {group.files[0].name}
                   </span>
-                  <span>{formatBytes(group.size)} each</span>
+                  <span>{t('duplicateFinder.each', { size: formatBytes(group.size) })}</span>
                 </div>
 
                 {group.files.map((file, fIdx) => (

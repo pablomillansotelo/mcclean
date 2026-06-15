@@ -1,6 +1,7 @@
 import { Trash2, Coffee, Download } from "lucide-react";
 import { useState } from "react";
 import { ScanResult } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface HomebrewProps {
   data: ScanResult[];
@@ -8,13 +9,15 @@ interface HomebrewProps {
 }
 
 export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps) {
+  const { t } = useTranslation();
+
   const handleUninstall = async (name: string) => {
-    if (confirm(`Uninstall Homebrew package "${name}"? This cannot be undone.`)) {
+    if (confirm(t('homebrew.confirmUninstall', { name }))) {
       const success = await window.electron.uninstallBrew(name);
       if (success) {
         setPackages((prev) => prev.filter((p) => p.name !== name));
       } else {
-        alert("Uninstall failed. Check console for details.");
+        alert(t('homebrew.uninstallFailed'));
       }
     }
   };
@@ -26,25 +29,23 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
     setUpdating(true);
     await window.electron.updateBrew();
     setUpdating(false);
-    alert("Homebrew updated!");
+    alert(t('homebrew.brewUpdated'));
   };
 
   const displayedPackages = showLeavesOnly ? packages.filter((p) => p.isLeaf) : packages;
 
-  // if (loading) return ...
-
   return (
     <div className="view-container">
       <div className="view-header">
-        <h2>Homebrew Packages ({packages.length})</h2>
-        <p className="text-sm text-white/50">Manage formulas and casks</p>
+        <h2>{t('homebrew.title', { count: packages.length })}</h2>
+        <p className="text-sm text-white/50">{t('homebrew.subtitle')}</p>
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
           <button className="secondary-button" onClick={handleUpdate} disabled={updating}>
-            {updating ? "Updating..." : "Update Homebrew"}
+            {updating ? t('homebrew.updating') : t('homebrew.updateBrew')}
           </button>
           <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "12px" }}>
             <input type="checkbox" checked={showLeavesOnly} onChange={(e) => setShowLeavesOnly(e.target.checked)} />
-            Show Leaves Only
+            {t('homebrew.showLeavesOnly')}
           </label>
         </div>
       </div>
@@ -56,13 +57,13 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
             <div className="file-info">
               <div className="file-name">
                 {pkg.name}
-                {pkg.isLeaf && <span style={{ marginLeft: "8px", fontSize: "10px", background: "#10b981", padding: "2px 6px", borderRadius: "4px", color: "black" }}>LEAF</span>}
+                {pkg.isLeaf && <span style={{ marginLeft: "8px", fontSize: "10px", background: "#10b981", padding: "2px 6px", borderRadius: "4px", color: "black" }}>{t('homebrew.leaf')}</span>}
               </div>
               <div className="file-path">
                 {pkg.version} • {pkg.type}
               </div>
             </div>
-            <button className="action-btn delete-btn" onClick={() => handleUninstall(pkg.name)} title="Uninstall">
+            <button className="action-btn delete-btn" onClick={() => handleUninstall(pkg.name)} title={t('homebrew.uninstall')}>
               <Trash2 size={16} />
             </button>
           </div>

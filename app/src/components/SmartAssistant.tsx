@@ -1,10 +1,12 @@
 import { AlertTriangle, Calendar, Trash } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export function SmartAssistant() {
   const [trashSize, setTrashSize] = useState(0);
   const [daysSinceScan, setDaysSinceScan] = useState(0);
   const [loading, setLoading] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkStatus = async () => {
@@ -46,20 +48,20 @@ export function SmartAssistant() {
     >
       <h3 style={{ display: "flex", alignItems: "center", gap: "8px", color: "#fbbf24", marginBottom: "10px" }}>
         <AlertTriangle size={18} />
-        Smart Assistant Suggestions
+        {t('smartAssistant.title')}
       </h3>
 
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         {hasTrashWarning && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "13px" }}>
             <Trash size={16} color="#ef4444" />
-            <span>Your Trash is large ({(trashSize / 1024 / 1024 / 1024).toFixed(1)} GB). Consider emptying it.</span>
+            <span>{t('smartAssistant.trashWarning', { size: (trashSize / 1024 / 1024 / 1024).toFixed(1) })}</span>
           </div>
         )}
         {hasScanWarning && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px", fontSize: "13px" }}>
             <Calendar size={16} color="#eab308" />
-            <span>It's been {daysSinceScan} days since your last cleanup scan.</span>
+            <span>{daysSinceScan === 999 ? t('smartAssistant.neverScanned') : t('smartAssistant.scanWarning', { days: daysSinceScan })}</span>
           </div>
         )}
       </div>

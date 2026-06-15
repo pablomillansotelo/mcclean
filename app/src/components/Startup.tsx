@@ -1,16 +1,19 @@
 import { Zap } from "lucide-react";
 import { StartupItem } from "../types";
+import { useTranslation } from "react-i18next";
 
 interface StartupProps {
   items: StartupItem[];
 }
 
 export function Startup({ items }: StartupProps) {
+  const { t } = useTranslation();
+
   return (
     <div className="view-container">
       <div className="view-header">
-        <h2>Startup Items ({items.length})</h2>
-        <p className="text-sm text-white/50">Manage applications that start automatically</p>
+        <h2>{t('startup.title', { count: items.length })}</h2>
+        <p className="text-sm text-white/50">{t('startup.subtitle')}</p>
       </div>
 
       <div className="file-list">
@@ -26,7 +29,7 @@ export function Startup({ items }: StartupProps) {
             </div>
           </div>
         ))}
-        {items.length === 0 && <div style={{ padding: "20px", textAlign: "center", opacity: 0.5 }}>No LaunchAgents found in your user library.</div>}
+        {items.length === 0 && <div style={{ padding: "20px", textAlign: "center", opacity: 0.5 }}>{t('startup.noItems')}</div>}
       </div>
     </div>
   );

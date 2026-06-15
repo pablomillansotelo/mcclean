@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/Dashboard";
 import { LargeFiles } from "./components/LargeFiles";
@@ -19,6 +19,12 @@ function App() {
   const [activeView, setActiveView] = useState("dashboard");
   const [scanning, setScanning] = useState(false);
   const [hasScanned, setHasScanned] = useState(false);
+  const [theme, setTheme] = useState("dark"); // Default dark for "pizarra fria"
+
+  // Apply theme to document
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   const [results, setResults] = useState<ScanResult[]>([]);
   const [apps, setApps] = useState<ScanResult[]>([]);
@@ -29,14 +35,7 @@ function App() {
   const [systemItems, setSystemItems] = useState<ScanResult[]>([]); // System Cleaner State
 
   const [spaceData, setSpaceData] = useState<ScanResult[]>([]);
-  const [spaceLensScanning, setSpaceLensScanning] = useState(false);
-
-  const handleSpaceScan = async () => {
-    setSpaceLensScanning(true);
-    const data = await window.electron.scanSpaceLens();
-    setSpaceData(data);
-    setSpaceLensScanning(false);
-  };
+  // Removed spaceLens logic here since component handles it internally
 
   const handleScan = async () => {
     setScanning(true);
@@ -78,8 +77,12 @@ function App() {
     switch (activeView) {
       case "dashboard":
         return <Dashboard scanning={scanning} hasScanned={hasScanned} results={results} apps={apps} brew={brew} devItems={devItems} onScan={handleScan} />;
-      case "system-cleaner":
+      case "cleanup":
         return <SystemCleaner data={systemItems} setData={setSystemItems} />;
+      case "large-files":
+        return <LargeFiles results={results} onDelete={handleDelete} />;
+      case "duplicates":
+        return <DuplicateFinder />;
       case "apps":
         return <Applications data={apps} setData={setApps} />;
       case "homebrew":
@@ -87,17 +90,11 @@ function App() {
       case "devtools":
         return <DevCleaner data={devItems} setData={setDevItems} />;
       case "spacelens":
-        return <SpaceLens data={spaceData} scanning={spaceLensScanning} onScan={handleSpaceScan} />;
+        return <SpaceLens />;
       case "startup":
         return <Startup items={startupItems} />;
       case "privacy":
         return <Privacy data={privacyItems} setData={setPrivacyItems} />;
-      case "large-files":
-        return <LargeFiles results={results} onDelete={handleDelete} />;
-      case "duplicates":
-        return <DuplicateFinder />;
-      case "cleaner":
-        return <Cleaner results={results} onDelete={handleDelete} />;
       case "settings":
         return <Settings onRescan={handleScan} />;
       default:
@@ -107,7 +104,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar activeView={activeView} onNavigate={setActiveView} />
+      <Sidebar activeView={activeView} onNavigate={setActiveView} theme={theme} setTheme={setTheme} />
       <main className="main-content">
         <div className="draggable" style={{ height: "40px", width: "100%", position: "absolute", top: 0, left: 0 }} />
         {renderView()}

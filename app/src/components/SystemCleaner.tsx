@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { ScanResult } from "../types";
 import { HardDrive, RefreshCw, Trash2, AlertTriangle, FileText, Database } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import "./SystemCleaner.css";
 
 interface SystemCleanerProps {
@@ -11,6 +12,7 @@ interface SystemCleanerProps {
 export function SystemCleaner({ data, setData }: SystemCleanerProps) {
   const [loading, setLoading] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
+  const { t } = useTranslation();
 
   const scanSystem = useCallback(async () => {
     setLoading(true);
@@ -43,7 +45,7 @@ export function SystemCleaner({ data, setData }: SystemCleanerProps) {
   const cleanSelected = async () => {
     if (selectedItems.size === 0) return;
 
-    if (!confirm(`Are you sure you want to delete ${selectedItems.size} system items? This cannot be undone.`)) return;
+    if (!confirm(t('systemCleaner.confirmDelete', { count: selectedItems.size }))) return;
 
     for (const path of selectedItems) {
       // Use move-to-trash which now has safety checks
@@ -63,17 +65,17 @@ export function SystemCleaner({ data, setData }: SystemCleanerProps) {
 
   return (
     <div className="content-view">
-      <div className="header-actions">
-        <h1>System Junk</h1>
+      <div className="header-actions" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+        <h2 style={{ margin: 0 }}>{t('systemCleaner.title')}</h2>
         <div style={{ display: "flex", gap: "10px" }}>
           <button className="secondary-button" onClick={scanSystem} disabled={loading}>
             <RefreshCw size={16} className={loading ? "spin" : ""} />
-            Rescan
+            {t('systemCleaner.rescan')}
           </button>
           {selectedItems.size > 0 && (
             <button className="primary-button danger" onClick={cleanSelected}>
               <Trash2 size={16} />
-              Clean Selected
+              {t('systemCleaner.cleanSelected')}
             </button>
           )}
         </div>
@@ -84,25 +86,25 @@ export function SystemCleaner({ data, setData }: SystemCleanerProps) {
         style={{
           background: "rgba(245, 158, 11, 0.1)",
           border: "1px solid rgba(245, 158, 11, 0.2)",
-          padding: "15px",
-          borderRadius: "8px",
-          marginBottom: "20px",
+          padding: "15px 20px",
+          borderRadius: "10px",
+          marginBottom: "25px",
           display: "flex",
-          gap: "10px",
+          gap: "15px",
           alignItems: "center",
         }}
       >
-        <AlertTriangle size={20} color="#f59e0b" />
-        <p style={{ margin: 0, fontSize: "13px", color: "#f59e0b" }}>
-          These files are generally safe to delete, but clearing system caches may slow down your Mac temporarily while they rebuild. McClean protects critical files automatically.
+        <AlertTriangle size={22} color="#f59e0b" style={{ flexShrink: 0 }} />
+        <p style={{ margin: 0, fontSize: "13px", color: "#f59e0b", lineHeight: 1.5 }}>
+          {t('systemCleaner.warning')}
         </p>
       </div>
 
       <div className="file-list">
         {loading ? (
-          <div className="empty-state">Scanning system locations...</div>
+          <div className="empty-state">{t('systemCleaner.scanning')}</div>
         ) : data.length === 0 ? (
-          <div className="empty-state">No system junk found. Your Mac is clean!</div>
+          <div className="empty-state">{t('systemCleaner.noJunk')}</div>
         ) : (
           data.map((item) => (
             <div key={item.path} className={`file-item selectable ${selectedItems.has(item.path) ? "selected" : ""}`} onClick={() => toggleSelect(item.path)}>

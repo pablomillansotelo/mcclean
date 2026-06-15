@@ -1,14 +1,17 @@
+import { useTranslation } from "react-i18next";
+
 export function LargeFiles({ results, onDelete }: { results: any[]; onDelete: (path: string) => void }) {
   // Filter > 100MB
   const largeFiles = results.filter((item) => item.size > 100 * 1024 * 1024);
+  const { t } = useTranslation();
 
   return (
     <div className="content-view">
-      <h1>Large Files</h1>
-      <p style={{ opacity: 0.7, marginBottom: "20px" }}>Files larger than 100MB</p>
+      <h1>{t('largeFiles.title')}</h1>
+      <p style={{ opacity: 0.7, marginBottom: "20px" }}>{t('largeFiles.subtitle')}</p>
 
       {largeFiles.length === 0 ? (
-        <div style={{ padding: "40px", textAlign: "center", opacity: 0.5 }}>No large files found. Run a scan first.</div>
+        <div style={{ padding: "40px", textAlign: "center", opacity: 0.5 }}>{t('largeFiles.noFiles')}</div>
       ) : (
         <div className="results-list">
           {largeFiles.map((item, idx) => (
@@ -40,7 +43,7 @@ export function LargeFiles({ results, onDelete }: { results: any[]; onDelete: (p
                   }}
                   onClick={() => onDelete(item.path)}
                 >
-                  Trash
+                  {t('largeFiles.trash')}
                 </button>
               </div>
             </div>

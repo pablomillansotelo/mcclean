@@ -1,0 +1,142 @@
+{
+  "sidebar": {
+    "title": "mcclean",
+    "general": "GENERAL",
+    "overview": "Resumen",
+    "settings": "Configuración",
+    "cleaning": "LIMPIEZA",
+    "cleanup": "Basura del Sistema",
+    "duplicates": "Buscador de Duplicados",
+    "largeFiles": "Archivos Grandes",
+    "spaceLens": "Lente de Espacio",
+    "appsAndPrivacy": "APPS Y PRIVACIDAD",
+    "applications": "Aplicaciones",
+    "privacy": "Privacidad",
+    "startup": "Inicio del Sistema",
+    "devtools": "Herramientas de Desarrollo",
+    "homebrew": "Homebrew"
+  },
+  "dashboard": {
+    "status": "Resumen del Sistema",
+    "readyToScan": "Listo para Escanear",
+    "scanPrompt": "Escanea tu Mac para recuperar espacio.",
+    "startDeepScan": "Iniciar Escaneo Profundo",
+    "lastScan": "Último escaneo: {{date}}",
+    "systemJunk": "Basura del Sistema",
+    "itemsFound": "{{count}} elementos",
+    "applications": "Aplicaciones",
+    "totalSize": "{{size}} MB total",
+    "homebrew": "Homebrew",
+    "packagesInstalled": "Paquetes instalados",
+    "devJunk": "Basura de Desarrollo",
+    "downloadsBin": "Carpeta Descargas",
+    "files": "{{count}} archivos",
+    "largestFile": "Archivo Más Grande",
+    "rescanSystem": "Escanear Sistema",
+    "rescanning": "Escaneando...",
+    "scanNow": "Escanear Ahora",
+    "cancel": "Cancelar",
+    "scanning": "Escaneando...",
+    "scanComplete": "Escaneo Completado",
+    "cleanNow": "Limpiar Ahora"
+  },
+  "cleanup": {
+    "systemJunk": "Basura del Sistema",
+    "largeFiles": "Archivos Grandes",
+    "duplicates": "Duplicados",
+    "cleanSelected": "Limpiar Seleccionados",
+    "noItems": "No se encontraron elementos",
+    "fileName": "Nombre",
+    "fileSize": "Tamaño",
+    "title": "Almacenamiento y Limpieza",
+    "subtitle": "Libera espacio eliminando basura del sistema, archivos grandes y duplicados."
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "systemDefault": "Predeterminado",
+    "english": "Inglés",
+    "spanish": "Español"
+  },
+  "systemCleaner": {
+    "title": "Basura del Sistema",
+    "rescan": "Reescanear",
+    "cleanSelected": "Limpiar Seleccionados",
+    "confirmDelete": "¿Estás seguro de que deseas eliminar {{count}} elementos del sistema? Esto no se puede deshacer.",
+    "warning": "Estos archivos son generalmente seguros de eliminar, pero limpiar las cachés del sistema puede ralentizar tu Mac temporalmente mientras se reconstruyen. McClean protege los archivos críticos automáticamente.",
+    "scanning": "Escaneando ubicaciones del sistema...",
+    "noJunk": "No se encontró basura del sistema. ¡Tu Mac está limpia!"
+  },
+  "largeFiles": {
+    "title": "Archivos Grandes",
+    "subtitle": "Archivos mayores a 100MB",
+    "noFiles": "No se encontraron archivos grandes. Ejecuta un escaneo primero.",
+    "trash": "Eliminar"
+  },
+  "duplicateFinder": {
+    "title": "Buscador de Duplicados",
+    "subtitle": "Encuentra y elimina archivos idénticos para liberar espacio.",
+    "wastedSpace": "Espacio Desperdiciado",
+    "scanPrompt": "Escanea tu carpeta de Usuario en busca de archivos duplicados.",
+    "startScan": "Iniciar Escaneo",
+    "keepNewest": "Conservar Más Nuevos",
+    "keepOldest": "Conservar Más Viejos",
+    "trashSelected": "Eliminar Seleccionados ({{size}})",
+    "copies": "{{count}} copias",
+    "each": "{{size}} c/u"
+  },
+  "applications": {
+    "title": "Aplicaciones ({{count}})",
+    "subtitle": "Administrar aplicaciones instaladas",
+    "confirmUninstall": "¿Estás seguro de que deseas mover \"{{app}}\" a la Papelera?",
+    "foundAssociated": "Se encontraron {{count}} archivos asociados (plist, cachés) que también se pueden eliminar.",
+    "confirmAssociated": "¿Deseas eliminar los {{count}} archivos asociados encontrados?\n\n{{files}}",
+    "moveToTrash": "Mover a la Papelera"
+  },
+  "homebrew": {
+    "title": "Paquetes de Homebrew ({{count}})",
+    "subtitle": "Administrar formulas y casks",
+    "confirmUninstall": "¿Desinstalar el paquete de Homebrew \"{{name}}\"? Esto no se puede deshacer.",
+    "uninstallFailed": "Error al desinstalar. Revisa la consola para más detalles.",
+    "updating": "Actualizando...",
+    "updateBrew": "Actualizar Homebrew",
+    "brewUpdated": "¡Homebrew actualizado!",
+    "showLeavesOnly": "Mostrar Solo Hojas (Leaves)",
+    "leaf": "HOJA",
+    "uninstall": "Desinstalar"
+  },
+  "privacy": {
+    "title": "Privacidad y Seguridad",
+    "subtitle": "Administrar datos del navegador y permisos de apps",
+    "confirmClean": "¿Borrar caché de {{name}}?",
+    "appPermissions": "Permisos de Apps",
+    "appPermissionsDesc": "Administra el acceso a Cámara, Micrófono y Ubicación en Ajustes del Sistema",
+    "browserCaches": "Cachés del Navegador",
+    "clean": "Limpiar",
+    "allClean": "Todas las cachés de los navegadores están limpias."
+  },
+  "startup": {
+    "title": "Inicio del Sistema ({{count}})",
+    "subtitle": "Administrar aplicaciones que inician automáticamente",
+    "noItems": "No se encontraron LaunchAgents en la biblioteca de usuario."
+  },
+  "devCleaner": {
+    "title": "Limpiador de Desarrollo ({{count}})",
+    "subtitle": "Limpiar node_modules y venvs",
+    "confirmMove": "¿Mover \"{{path}}\" a la Papelera?",
+    "moveToTrash": "Mover a la Papelera"
+  },
+  "spaceLens": {
+    "title": "Lente de Espacio",
+    "subtitle": "Visualiza el uso de tu almacenamiento",
+    "scanning": "Escaneando...",
+    "scanFolder": "Escanear Carpeta de Usuario",
+    "clickScan": "Haz clic en Escanear para visualizar tu carpeta de usuario."
+  },
+  "smartAssistant": {
+    "title": "Sugerencias del Asistente Inteligente",
+    "trashWarning": "Tu Papelera está muy llena ({{size}} GB). Considera vaciarla.",
+    "scanWarning": "Han pasado {{days}} días desde tu último escaneo de limpieza.",
+    "neverScanned": "Nunca has realizado un escaneo de limpieza. Considera iniciar uno."
+  }
+}
