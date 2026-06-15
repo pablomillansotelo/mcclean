@@ -3,6 +3,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::sync::Mutex;
 use tauri::{AppHandle, Emitter};
+use tauri::menu::{Menu, PredefinedMenuItem, Submenu};
 
 #[derive(Clone, Serialize, Deserialize)]
 struct ProgressPayload {
@@ -32,7 +33,30 @@ async fn scan_system_cmd(app: AppHandle) -> Result<Vec<ScanResult>, String> {
 
 #[tauri::command]
 async fn start_scan(_path: String) -> Result<Vec<ScanResult>, String> {
-    Ok(vec![])
+    // Return large files from user's home directory
+    let home = dirs::home_dir().map(|p| p.to_string_lossy().to_string()).unwrap_or_else(|| "/".to_string());
+    
+    // We can reuse analyze_directory to get large files by scanning the home directory,
+    // but without full depth to save time, or we just do a quick scan of Downloads and Documents.
+    let mut large_files = Vec::new();
+    let dirs_to_scan = vec![
+        format!("{}/Downloads", home),
+        format!("{}/Documents", home),
+        format!("{}/Desktop", home),
+        format!("{}/Movies", home),
+    ];
+
+    for d in dirs_to_scan {
+        if let Ok(entries) = mcclean_core::space::analyze_directory(&d, |_, _| {}) {
+            for entry in entries {
+                if !entry.is_directory && entry.size > 50 * 1024 * 1024 { // > 50MB
+                    large_files.push(entry);
+                }
+            }
+        }
+    }
+
+    Ok(large_files)
 }
 
 #[tauri::command]
@@ -98,8 +122,17 @@ async fn scan_duplicates(
 }
 
 #[tauri::command]
-async fn analyze_directory(path: String) -> Result<Vec<ScanResult>, String> {
-    mcclean_core::space::analyze_directory(&path)
+async fn analyze_directory(app: AppHandle, path: String) -> Result<Vec<ScanResult>, String> {
+    mcclean_core::space::analyze_directory(&path, |current_file, _items_processed| {
+        let _ = app.emit(
+            "scan-progress",
+            ProgressPayload {
+                scanId: "space_lens".to_string(),
+                progress: 0.0,
+                status: format!("Analizando: {}", current_file),
+            },
+        );
+    })
 }
 
 #[tauri::command]
@@ -142,6 +175,68 @@ pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_log::Builder::default().build())
+        .setup(|app| {
+            #[cfg(target_os = "macos")]
+            {
+                let handle = app.handle();
+                let app_menu = Submenu::with_items(
+                    handle,
+                    "McClean",
+                    true,
+                    &[
+                        &PredefinedMenuItem::about(handle, None, None)?,
+                        &PredefinedMenuItem::separator(handle)?,
+                        &PredefinedMenuItem::hide(handle, Some("Ocultar McClean"))?,
+                        &PredefinedMenuItem::hide_others(handle, Some("Ocultar Otros"))?,
+                        &PredefinedMenuItem::show_all(handle, Some("Mostrar Todo"))?,
+                        &PredefinedMenuItem::separator(handle)?,
+                        &PredefinedMenuItem::quit(handle, Some("Salir de McClean"))?,
+                    ],
+                )?;
+
+                let edit_menu = Submenu::with_items(
+                    handle,
+                    "Edición",
+                    true,
+                    &[
+                        &PredefinedMenuItem::undo(handle, Some("Deshacer"))?,
+                        &PredefinedMenuItem::redo(handle, Some("Rehacer"))?,
+                        &PredefinedMenuItem::separator(handle)?,
+                        &PredefinedMenuItem::cut(handle, Some("Cortar"))?,
+                        &PredefinedMenuItem::copy(handle, Some("Copiar"))?,
+                        &PredefinedMenuItem::paste(handle, Some("Pegar"))?,
+                        &PredefinedMenuItem::select_all(handle, Some("Seleccionar Todo"))?,
+                    ],
+                )?;
+
+                let view_menu = Submenu::with_items(
+                    handle,
+                    "Vista",
+                    true,
+                    &[
+                        &PredefinedMenuItem::fullscreen(handle, Some("Pantalla Completa"))?,
+                    ],
+                )?;
+
+                let window_menu = Submenu::with_items(
+                    handle,
+                    "Ventana",
+                    true,
+                    &[
+                        &PredefinedMenuItem::minimize(handle, Some("Minimizar"))?,
+                        &PredefinedMenuItem::close_window(handle, Some("Cerrar Ventana"))?,
+                    ],
+                )?;
+
+                let menu = Menu::with_items(
+                    handle,
+                    &[&app_menu, &edit_menu, &view_menu, &window_menu],
+                )?;
+
+                app.set_menu(menu)?;
+            }
+            Ok(())
+        })
         .manage(Store(Mutex::new(HashMap::new())))
         .invoke_handler(tauri::generate_handler![
             scan_system_cmd,

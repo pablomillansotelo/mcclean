@@ -22,7 +22,7 @@ export function DevCleaner({ data: items, setData: setItems }: DevCleanerProps) 
   // if (loading) ...
 
   return (
-    <div className="view-container">
+    <div className="content-view">
       <div className="view-header">
         <h2>{t('devCleaner.title', { count: items.length })}</h2>
         <p className="text-sm text-white/50">{t('devCleaner.subtitle')}</p>

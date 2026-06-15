@@ -28,9 +28,9 @@ export function Privacy({ data, setData }: PrivacyProps) {
   };
 
   return (
-    <div className="view-container">
+    <div className="content-view">
       <div className="view-header">
-        <h2>{t('privacy.title')}</h2>
+        <h2>{t('privacy.title', { count: data.length })}</h2>
         <p className="text-sm text-white/50">{t('privacy.subtitle')}</p>
       </div>
 

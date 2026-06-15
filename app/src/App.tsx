@@ -34,15 +34,18 @@ function App() {
   const [privacyItems, setPrivacyItems] = useState<ScanResult[]>([]);
   const [systemItems, setSystemItems] = useState<ScanResult[]>([]); // System Cleaner State
 
-  const [spaceData, setSpaceData] = useState<ScanResult[]>([]);
-  // Removed spaceLens logic here since component handles it internally
+  // Persistent state for interactive tools
+  const [duplicateResults, setDuplicateResults] = useState<any[]>([]);
+  const [spaceLensHistory, setSpaceLensHistory] = useState<string[]>([]);
+  const [spaceLensData, setSpaceLensData] = useState<ScanResult[]>([]);
 
   const handleScan = async () => {
     setScanning(true);
     setHasScanned(true);
     try {
       // Parallel scan
-      const [files, appsData, brewData, devData, startupData, privacyData] = await Promise.all([
+      const [systemData, files, appsData, brewData, devData, startupData, privacyData] = await Promise.all([
+        window.electron.scanSystem(),
         window.electron.startScan(""), // Empty string defaults to Home in backend
         window.electron.scanApps(),
         window.electron.scanBrew(),
@@ -51,6 +54,7 @@ function App() {
         window.electron.scanPrivacy(),
       ]);
 
+      setSystemItems(systemData || []);
       setResults(files || []);
       setApps(appsData || []);
       setBrew(brewData || []);
@@ -82,7 +86,7 @@ function App() {
       case "large-files":
         return <LargeFiles results={results} onDelete={handleDelete} />;
       case "duplicates":
-        return <DuplicateFinder />;
+        return <DuplicateFinder results={duplicateResults} setResults={setDuplicateResults} />;
       case "apps":
         return <Applications data={apps} setData={setApps} />;
       case "homebrew":
@@ -90,13 +94,13 @@ function App() {
       case "devtools":
         return <DevCleaner data={devItems} setData={setDevItems} />;
       case "spacelens":
-        return <SpaceLens />;
+        return <SpaceLens data={spaceLensData} setData={setSpaceLensData} pathHistory={spaceLensHistory} setPathHistory={setSpaceLensHistory} />;
       case "startup":
         return <Startup items={startupItems} />;
       case "privacy":
         return <Privacy data={privacyItems} setData={setPrivacyItems} />;
       case "settings":
-        return <Settings onRescan={handleScan} />;
+        return <Settings onRescan={handleScan} theme={theme} setTheme={setTheme} />;
       default:
         return <Dashboard scanning={scanning} hasScanned={hasScanned} results={results} apps={apps} brew={brew} devItems={devItems} onScan={handleScan} />;
     }

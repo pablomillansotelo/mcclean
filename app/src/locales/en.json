@@ -14,7 +14,13 @@
     "privacy": "Privacy",
     "startup": "Startup Manager",
     "devtools": "Dev Tools",
-    "homebrew": "Homebrew"
+    "homebrew": "Homebrew",
+    "cpuLoad": "CPU Load",
+    "memory": "Memory",
+    "diskSpace": "Disk Space",
+    "uptime": "Uptime",
+    "used": "used",
+    "systemHealthy": "System Healthy"
   },
   "dashboard": {
     "status": "System Overview",
@@ -56,7 +62,14 @@
     "language": "Language",
     "systemDefault": "System Default",
     "english": "English",
-    "spanish": "Spanish"
+    "spanish": "Spanish",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "version": "Version",
+    "resetData": "Reset Application Data",
+    "resetConfirm": "Are you sure? This will not delete your files, just app settings.",
+    "resetBtn": "Reset"
   },
   "systemCleaner": {
     "title": "System Junk",

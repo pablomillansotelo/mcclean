@@ -20,9 +20,8 @@ interface DuplicateGroup {
   }[];
 }
 
-export function DuplicateFinder() {
+export function DuplicateFinder({ results, setResults }: { results: DuplicateGroup[], setResults: React.Dispatch<React.SetStateAction<DuplicateGroup[]>> }) {
   const [scanning, setScanning] = useState(false);
-  const [results, setResults] = useState<DuplicateGroup[]>([]);
   const [progress, setProgress] = useState({ progress: 0, status: "" });
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
@@ -123,10 +122,10 @@ export function DuplicateFinder() {
 
   return (
     <div className="content-view fade-in">
-      <div className="header-actions" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+      <div className="view-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
-          <h1>{t('duplicateFinder.title')}</h1>
-          <p className="subtitle">{t('duplicateFinder.subtitle')}</p>
+          <h2>{t('duplicateFinder.title')}</h2>
+          <p className="text-sm text-white/50">{t('duplicateFinder.subtitle')}</p>
         </div>
         {!scanning && results.length > 0 && (
           <div style={{ textAlign: "right" }}>

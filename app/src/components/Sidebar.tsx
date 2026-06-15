@@ -18,8 +18,7 @@ export function Sidebar({ activeView, onNavigate, theme, setTheme }: SidebarProp
     {
       title: t('sidebar.general'),
       items: [
-        { id: "dashboard", label: t('sidebar.overview'), icon: LayoutDashboard },
-        { id: "settings", label: t('sidebar.settings'), icon: Settings },
+        { id: "dashboard", label: t('sidebar.overview'), icon: LayoutDashboard }
       ]
     },
     {
@@ -78,7 +77,7 @@ export function Sidebar({ activeView, onNavigate, theme, setTheme }: SidebarProp
       {stats && (
         <div style={{ padding: "15px", fontSize: "11px", color: "rgba(255,255,255,0.6)", background: "rgba(0,0,0,0.2)", margin: "10px", borderRadius: "10px" }}>
           <div style={{ marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
-            <span>CPU Load</span>
+            <span>{t('sidebar.cpuLoad')}</span>
             <span>{stats.cpu.load.toFixed(2)}</span>
           </div>
           <div style={{ width: "100%", height: "4px", background: "rgba(255,255,255,0.1)", borderRadius: "2px", overflow: "hidden" }}>
@@ -86,7 +85,7 @@ export function Sidebar({ activeView, onNavigate, theme, setTheme }: SidebarProp
           </div>
 
           <div style={{ marginTop: "10px", marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
-            <span>Memory</span>
+            <span>{t('sidebar.memory')}</span>
             <span>{((stats.memory.used / stats.memory.total) * 100).toFixed(0)}%</span>
           </div>
           <div style={{ width: "100%", height: "4px", background: "rgba(255,255,255,0.1)", borderRadius: "2px", overflow: "hidden" }}>
@@ -94,15 +93,15 @@ export function Sidebar({ activeView, onNavigate, theme, setTheme }: SidebarProp
           </div>
 
           <div style={{ marginTop: "10px", marginBottom: "5px", display: "flex", justifyContent: "space-between" }}>
-            <span>Disk Space</span>
-            <span>{((1 - stats.disk.free / stats.disk.total) * 100).toFixed(0)}% used</span>
+            <span>{t('sidebar.diskSpace')}</span>
+            <span>{((1 - stats.disk.free / stats.disk.total) * 100).toFixed(0)}% {t('sidebar.used')}</span>
           </div>
           <div style={{ width: "100%", height: "4px", background: "rgba(255,255,255,0.1)", borderRadius: "2px", overflow: "hidden" }}>
             <div style={{ width: `${(1 - stats.disk.free / stats.disk.total) * 100}%`, height: "100%", background: "#c026d3" }} />
           </div>
           
           <div style={{ marginTop: "10px", display: "flex", justifyContent: "space-between", color: "rgba(255,255,255,0.4)" }}>
-            <span>Uptime</span>
+            <span>{t('sidebar.uptime')}</span>
             <span>{Math.floor(stats.uptime / 3600)}h {Math.floor((stats.uptime % 3600) / 60)}m</span>
           </div>
         </div>
@@ -111,14 +110,14 @@ export function Sidebar({ activeView, onNavigate, theme, setTheme }: SidebarProp
       <div className="sidebar-footer" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div className="status-indicator">
           <div className="dot" />
-          <span>System Healthy</span>
+          <span>{t('sidebar.systemHealthy')}</span>
         </div>
         <button 
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: '5px' }}
-          title="Toggle Theme"
+          onClick={() => onNavigate('settings')}
+          style={{ background: 'transparent', border: 'none', color: activeView === 'settings' ? '#c026d3' : 'rgba(255,255,255,0.6)', cursor: 'pointer', padding: '5px', transition: 'color 0.2s' }}
+          title={t('sidebar.settings')}
         >
-          {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+          <Settings size={16} />
         </button>
       </div>
     </div>

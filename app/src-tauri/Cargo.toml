@@ -1,5 +1,5 @@
 [package]
-name = "app"
+name = "McClean"
 version = "0.1.0"
 description = "A Tauri App"
 authors = ["you"]
@@ -25,3 +25,4 @@ tauri = { version = "2.11.2", features = [] }
 tauri-plugin-log = "2"
 mcclean-core = { path = "../../core" }
 tauri-plugin-dialog = "2"
+dirs = "6.0.0"

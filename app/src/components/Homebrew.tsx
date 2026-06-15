@@ -35,7 +35,7 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
   const displayedPackages = showLeavesOnly ? packages.filter((p) => p.isLeaf) : packages;
 
   return (
-    <div className="view-container">
+    <div className="content-view">
       <div className="view-header">
         <h2>{t('homebrew.title', { count: packages.length })}</h2>
         <p className="text-sm text-white/50">{t('homebrew.subtitle')}</p>

@@ -3,7 +3,10 @@ use std::path::Path;
 use std::fs;
 use walkdir::WalkDir;
 
-pub fn analyze_directory(dir_path: &str) -> Result<Vec<ScanResult>, String> {
+pub fn analyze_directory<F>(dir_path: &str, mut on_progress: F) -> Result<Vec<ScanResult>, String>
+where
+    F: FnMut(&str, usize),
+{
     let mut results = Vec::new();
     let root = Path::new(dir_path);
 
@@ -12,6 +15,7 @@ pub fn analyze_directory(dir_path: &str) -> Result<Vec<ScanResult>, String> {
     }
 
     let entries = fs::read_dir(root).map_err(|e| e.to_string())?;
+    let mut total_items = 0;
 
     for entry in entries {
         if let Ok(entry) = entry {
@@ -22,6 +26,10 @@ pub fn analyze_directory(dir_path: &str) -> Result<Vec<ScanResult>, String> {
             let mut size = 0;
             if is_dir {
                 for dir_entry in WalkDir::new(&path).into_iter().filter_map(|e| e.ok()) {
+                    total_items += 1;
+                    if total_items % 50 == 0 {
+                        on_progress(&dir_entry.path().to_string_lossy(), total_items);
+                    }
                     if let Ok(metadata) = dir_entry.metadata() {
                         if metadata.is_file() {
                             size += metadata.len();

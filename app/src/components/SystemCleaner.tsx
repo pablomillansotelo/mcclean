@@ -65,8 +65,8 @@ export function SystemCleaner({ data, setData }: SystemCleanerProps) {
 
   return (
     <div className="content-view">
-      <div className="header-actions" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
-        <h2 style={{ margin: 0 }}>{t('systemCleaner.title')}</h2>
+      <div className="view-header" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
+        <h2>{t('systemCleaner.title')}</h2>
         <div style={{ display: "flex", gap: "10px" }}>
           <button className="secondary-button" onClick={scanSystem} disabled={loading}>
             <RefreshCw size={16} className={loading ? "spin" : ""} />

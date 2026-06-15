@@ -12,9 +12,15 @@
     "appsAndPrivacy": "APPS Y PRIVACIDAD",
     "applications": "Aplicaciones",
     "privacy": "Privacidad",
-    "startup": "Inicio del Sistema",
-    "devtools": "Herramientas de Desarrollo",
-    "homebrew": "Homebrew"
+    "startup": "Gestor de Arranque",
+    "devtools": "Herr. de Desarrollador",
+    "homebrew": "Homebrew",
+    "cpuLoad": "Carga de CPU",
+    "memory": "Memoria",
+    "diskSpace": "Espacio en Disco",
+    "uptime": "Tiempo Activo",
+    "used": "usado",
+    "systemHealthy": "Sistema Saludable"
   },
   "dashboard": {
     "status": "Resumen del Sistema",
@@ -56,7 +62,14 @@
     "language": "Idioma",
     "systemDefault": "Predeterminado",
     "english": "Inglés",
-    "spanish": "Español"
+    "spanish": "Español",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "version": "Versión",
+    "resetData": "Restablecer Datos",
+    "resetConfirm": "¿Estás seguro? Esto no borrará tus archivos, solo la configuración de la app.",
+    "resetBtn": "Restablecer"
   },
   "systemCleaner": {
     "title": "Basura del Sistema",

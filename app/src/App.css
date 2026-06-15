@@ -18,11 +18,6 @@
   z-index: 50;
 }
 
-.view-container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding-bottom: 40px;
-}
 
 .view-header {
   margin-bottom: 30px;

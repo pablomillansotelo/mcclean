@@ -7,8 +7,10 @@ export function LargeFiles({ results, onDelete }: { results: any[]; onDelete: (p
 
   return (
     <div className="content-view">
-      <h1>{t('largeFiles.title')}</h1>
-      <p style={{ opacity: 0.7, marginBottom: "20px" }}>{t('largeFiles.subtitle')}</p>
+      <div className="view-header">
+        <h2>{t('sidebar.largeFiles')}</h2>
+        <p className="text-sm text-white/50">{t('largeFiles.subtitle')}</p>
+      </div>
 
       {largeFiles.length === 0 ? (
         <div style={{ padding: "40px", textAlign: "center", opacity: 0.5 }}>{t('largeFiles.noFiles')}</div>

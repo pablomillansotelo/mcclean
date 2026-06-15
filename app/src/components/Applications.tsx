@@ -41,7 +41,7 @@ export function Applications({ data: apps, setData: setApps }: ApplicationsProps
   };
 
   return (
-    <div className="view-container">
+    <div className="content-view">
       <div className="view-header">
         <h2>{t('applications.title', { count: apps.length })}</h2>
         <p className="text-sm text-white/50">{t('applications.subtitle')}</p>

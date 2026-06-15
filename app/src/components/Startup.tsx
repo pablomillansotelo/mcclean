@@ -10,7 +10,7 @@ export function Startup({ items }: StartupProps) {
   const { t } = useTranslation();
 
   return (
-    <div className="view-container">
+    <div className="content-view">
       <div className="view-header">
         <h2>{t('startup.title', { count: items.length })}</h2>
         <p className="text-sm text-white/50">{t('startup.subtitle')}</p>

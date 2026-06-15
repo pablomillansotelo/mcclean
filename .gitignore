@@ -25,3 +25,4 @@ dist-ssr
 target/
 .firebase/
 .DS_Store
+pad_icon.cjs

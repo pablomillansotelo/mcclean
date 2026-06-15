@@ -1,22 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ScanResult } from "../types";
 import { useTranslation } from "react-i18next";
 import { open } from "@tauri-apps/plugin-dialog";
 import { Folder, ArrowLeft, Loader2 } from "lucide-react";
 
-export function SpaceLens() {
+interface SpaceLensProps {
+  data: ScanResult[];
+  setData: React.Dispatch<React.SetStateAction<ScanResult[]>>;
+  pathHistory: string[];
+  setPathHistory: React.Dispatch<React.SetStateAction<string[]>>;
+}
+
+export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceLensProps) {
   const { t } = useTranslation();
-  const [data, setData] = useState<ScanResult[]>([]);
   const [scanning, setScanning] = useState(false);
-  const [pathHistory, setPathHistory] = useState<string[]>([]);
+  const [progressText, setProgressText] = useState<string>("");
   
   // Vibrant colors for visualization
   const colors = ["#ef4444", "#f97316", "#f59e0b", "#10b981", "#3b82f6", "#6366f1", "#8b5cf6", "#ec4899", "#14b8a6", "#f43f5e"];
+
+
+  useEffect(() => {
+    if (!scanning) return;
+    const unlisten = window.electron.onProgress((_event, data) => {
+      if (data.scanId === "space_lens") {
+        setProgressText(data.status);
+      }
+    });
+    return () => {
+      unlisten();
+    };
+  }, [scanning]);
 
   const currentPath = pathHistory.length > 0 ? pathHistory[pathHistory.length - 1] : null;
 
   const analyzePath = async (path: string) => {
     setScanning(true);
+    setProgressText("Calculando tamaños...");
     try {
       const results = await window.electron.analyzeDirectory(path);
       setData(results);
@@ -76,33 +96,34 @@ export function SpaceLens() {
   };
 
   return (
-    <div className="view-container">
-      <div className="view-header">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-          <div>
-            <h2>{t('spaceLens.title')}</h2>
-            <p className="text-sm text-white/50" style={{ maxWidth: "500px" }}>
-              {currentPath ? currentPath : t('spaceLens.subtitle')}
-            </p>
-          </div>
+    <div className="content-view">
+      <div className="view-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div>
+          <h2>{t('spaceLens.title')}</h2>
+          <p className="text-sm text-white/50" style={{ maxWidth: "500px" }}>
+            {currentPath ? currentPath : t('spaceLens.subtitle')}
+          </p>
+        </div>
           
-          <div style={{ display: "flex", gap: "10px" }}>
-            {currentPath && (
-              <button className="secondary-button" onClick={handleGoBack} disabled={scanning} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <ArrowLeft size={16} /> Atrás
-              </button>
-            )}
-            <button className="primary-button" onClick={handleSelectFolder} disabled={scanning} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <Folder size={16} /> {scanning ? "Analizando..." : "Escanear Carpeta"}
+        <div style={{ display: "flex", gap: "10px" }}>
+          {currentPath && (
+            <button className="secondary-button" onClick={handleGoBack} disabled={scanning} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <ArrowLeft size={16} /> {t('common.back', 'Atrás')}
             </button>
-          </div>
+          )}
+          <button className="primary-button" onClick={handleSelectFolder} disabled={scanning} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <Folder size={16} /> {scanning ? "Analizando..." : "Escanear Carpeta"}
+          </button>
         </div>
       </div>
 
       {scanning && (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "400px", flexDirection: "column", gap: "15px", color: "white" }}>
           <Loader2 className="spinning" size={40} color="#c026d3" />
-          <p>Calculando tamaños...</p>
+          <p style={{ fontWeight: "bold" }}>Calculando tamaños...</p>
+          <p className="animate-pulse" style={{ fontSize: "12px", opacity: 0.6, maxWidth: "400px", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+            {progressText}
+          </p>
         </div>
       )}
 
