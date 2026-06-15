@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/Dashboard";
 import { LargeFiles } from "./components/LargeFiles";
@@ -68,8 +69,10 @@ function App() {
     }
   };
 
+  const { t } = useTranslation();
+
   const handleDelete = async (path: string) => {
-    if (confirm(`Move item to Trash?`)) {
+    if (confirm(t('common.moveToTrashConfirm', 'Move item to Trash?'))) {
       const success = await window.electron.moveToTrash(path);
       if (success) {
         setResults((prev) => prev.filter((p) => p.path !== path));

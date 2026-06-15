@@ -1,4 +1,7 @@
 {
+  "common": {
+    "moveToTrashConfirm": "¿Mover elemento a la Papelera?"
+  },
   "sidebar": {
     "title": "mcclean",
     "general": "GENERAL",
@@ -141,10 +144,12 @@
   },
   "spaceLens": {
     "title": "Lente de Espacio",
-    "subtitle": "Visualiza el uso de tu almacenamiento",
-    "scanning": "Escaneando...",
-    "scanFolder": "Escanear Carpeta de Usuario",
-    "clickScan": "Haz clic en Escanear para visualizar tu carpeta de usuario."
+    "subtitle": "Visualiza tu almacenamiento para ver qué ocupa espacio.",
+    "clickScan": "Haz clic en 'Escanear Carpeta' para analizar un directorio.",
+    "calculating": "Calculando tamaños...",
+    "selectFolder": "Selecciona una carpeta para analizar",
+    "analyzing": "Analizando...",
+    "scanFolder": "Escanear Carpeta"
   },
   "smartAssistant": {
     "title": "Sugerencias del Asistente Inteligente",

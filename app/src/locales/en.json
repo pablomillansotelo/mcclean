@@ -1,4 +1,7 @@
 {
+  "common": {
+    "moveToTrashConfirm": "Move item to Trash?"
+  },
   "sidebar": {
     "title": "mcclean",
     "general": "GENERAL",
@@ -141,10 +144,12 @@
   },
   "spaceLens": {
     "title": "Space Lens",
-    "subtitle": "Visualize your storage usage",
-    "scanning": "Scanning...",
-    "scanFolder": "Scan Home Folder",
-    "clickScan": "Click Scan to visualize your Home folder."
+    "subtitle": "Visualize your storage to see what's taking up space.",
+    "clickScan": "Click 'Scan Folder' to analyze a directory.",
+    "calculating": "Calculating sizes...",
+    "selectFolder": "Select a folder to analyze",
+    "analyzing": "Analyzing...",
+    "scanFolder": "Scan Folder"
   },
   "smartAssistant": {
     "title": "Smart Assistant Suggestions",

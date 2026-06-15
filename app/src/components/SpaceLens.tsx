@@ -36,7 +36,7 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
 
   const analyzePath = async (path: string) => {
     setScanning(true);
-    setProgressText("Calculando tamaños...");
+    setProgressText(t('spaceLens.calculating', 'Calculating sizes...'));
     try {
       const results = await window.electron.analyzeDirectory(path);
       setData(results);
@@ -52,7 +52,7 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
       const selected = await open({
         directory: true,
         multiple: false,
-        title: "Selecciona una carpeta para analizar"
+        title: t('spaceLens.selectFolder', 'Select a folder to analyze')
       });
       
       if (selected && typeof selected === "string") {
@@ -112,7 +112,7 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
             </button>
           )}
           <button className="primary-button" onClick={handleSelectFolder} disabled={scanning} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Folder size={16} /> {scanning ? "Analizando..." : "Escanear Carpeta"}
+            <Folder size={16} /> {scanning ? t('spaceLens.analyzing', 'Analyzing...') : t('spaceLens.scanFolder', 'Scan Folder')}
           </button>
         </div>
       </div>
@@ -120,7 +120,7 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
       {scanning && (
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "400px", flexDirection: "column", gap: "15px", color: "white" }}>
           <Loader2 className="spinning" size={40} color="#c026d3" />
-          <p style={{ fontWeight: "bold" }}>Calculando tamaños...</p>
+          <p style={{ fontWeight: "bold" }}>{t('spaceLens.calculating', 'Calculating sizes...')}</p>
           <p className="animate-pulse" style={{ fontSize: "12px", opacity: 0.6, maxWidth: "400px", textAlign: "center", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {progressText}
           </p>
