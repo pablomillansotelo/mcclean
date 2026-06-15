@@ -119,6 +119,24 @@ pub fn update_brew() -> Result<bool, String> {
     Ok(output.status.success())
 }
 
+pub fn update_brew_package(name: &str) -> Result<bool, String> {
+    let brew_path = if std::path::Path::new("/opt/homebrew/bin/brew").exists() {
+        "/opt/homebrew/bin/brew"
+    } else if std::path::Path::new("/usr/local/bin/brew").exists() {
+        "/usr/local/bin/brew"
+    } else {
+        "brew"
+    };
+
+    let output = Command::new(brew_path)
+        .arg("upgrade")
+        .arg(name)
+        .output()
+        .map_err(|e| format!("Failed to upgrade brew package {}: {}", name, e))?;
+
+    Ok(output.status.success())
+}
+
 pub fn uninstall_brew(name: &str) -> Result<bool, String> {
     // Basic protection against empty names
     if name.trim().is_empty() {

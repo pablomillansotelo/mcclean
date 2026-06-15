@@ -22,6 +22,26 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
     }
   };
 
+  const handleUpdatePackage = async (name: string) => {
+    // Determine the actual package name by stripping " (Outdated)"
+    const actualName = name.replace(" (Outdated)", "");
+    if (confirm(t('homebrew.confirmUpdate', { name: actualName }))) {
+      setUpdating(true);
+      const success = await window.electron.updateBrewPackage(actualName);
+      setUpdating(false);
+      if (success) {
+        setPackages((prev) =>
+          prev.map((p) =>
+            p.name === name ? { ...p, name: actualName } : p
+          )
+        );
+        alert(t('homebrew.updateSuccess', { name: actualName }));
+      } else {
+        alert(t('homebrew.updateFailed', { name: actualName }));
+      }
+    }
+  };
+
   const [updating, setUpdating] = useState(false);
   const [showLeavesOnly, setShowLeavesOnly] = useState(false);
 
@@ -63,9 +83,22 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
                 {pkg.version} • {pkg.type}
               </div>
             </div>
-            <button className="action-btn delete-btn" onClick={() => handleUninstall(pkg.name)} title={t('homebrew.uninstall')}>
-              <Trash2 size={16} />
-            </button>
+            <div style={{ display: "flex", gap: "8px" }}>
+              {pkg.name.includes("(Outdated)") && (
+                <button
+                  className="action-btn"
+                  style={{ color: "#0a84ff" }}
+                  onClick={() => handleUpdatePackage(pkg.name)}
+                  title={t('homebrew.updatePackage')}
+                  disabled={updating}
+                >
+                  <Download size={16} />
+                </button>
+              )}
+              <button className="action-btn delete-btn" onClick={() => handleUninstall(pkg.name)} title={t('homebrew.uninstall')} disabled={updating}>
+                <Trash2 size={16} />
+              </button>
+            </div>
           </div>
         ))}
       </div>

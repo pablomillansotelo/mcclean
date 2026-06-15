@@ -113,13 +113,17 @@
     "title": "Paquetes de Homebrew ({{count}})",
     "subtitle": "Administrar formulas y casks",
     "confirmUninstall": "¿Desinstalar el paquete de Homebrew \"{{name}}\"? Esto no se puede deshacer.",
-    "uninstallFailed": "Error al desinstalar. Revisa la consola para más detalles.",
+    "uninstallFailed": "Error al desinstalar el paquete.",
     "updating": "Actualizando...",
     "updateBrew": "Actualizar Homebrew",
-    "brewUpdated": "¡Homebrew actualizado!",
+    "brewUpdated": "Homebrew se actualizó correctamente.",
     "showLeavesOnly": "Mostrar Solo Hojas (Leaves)",
     "leaf": "HOJA",
-    "uninstall": "Desinstalar"
+    "uninstall": "Desinstalar",
+    "confirmUpdate": "¿Actualizar el paquete {{name}}?",
+    "updateSuccess": "{{name}} actualizado correctamente.",
+    "updateFailed": "Error al actualizar {{name}}.",
+    "updatePackage": "Actualizar Paquete"
   },
   "privacy": {
     "title": "Privacidad y Seguridad",

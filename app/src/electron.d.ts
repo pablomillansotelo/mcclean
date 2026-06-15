@@ -15,6 +15,7 @@ export interface ElectronAPI {
   scanApps: () => Promise<ScanResult[]>;
   scanBrew: () => Promise<ScanResult[]>;
   updateBrew: () => Promise<boolean>;
+  updateBrewPackage: (name: string) => Promise<boolean>;
   scanDevTools: () => Promise<ScanResult[]>;
   uninstallBrew: (name: string) => Promise<boolean>;
   findAssociatedFiles: (appName: string) => Promise<string[]>;

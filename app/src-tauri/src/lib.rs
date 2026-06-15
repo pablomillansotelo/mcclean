@@ -75,6 +75,11 @@ async fn update_brew() -> Result<bool, String> {
 }
 
 #[tauri::command]
+async fn update_brew_package(name: String) -> Result<bool, String> {
+    mcclean_core::brew::update_brew_package(&name)
+}
+
+#[tauri::command]
 async fn scan_dev_tools() -> Result<Vec<ScanResult>, String> {
     Ok(vec![])
 }
@@ -244,6 +249,7 @@ pub fn run() {
             scan_apps,
             scan_brew,
             update_brew,
+            update_brew_package,
             scan_dev_tools,
             uninstall_brew,
             find_associated_files,

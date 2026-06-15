@@ -7,6 +7,7 @@ export const tauriElectronShim = {
   scanApps: () => invoke<ScanResult[]>('scan_apps'),
   scanBrew: () => invoke<ScanResult[]>('scan_brew'),
   updateBrew: () => invoke<boolean>('update_brew'),
+  updateBrewPackage: (name: string) => invoke<boolean>('update_brew_package', { name }),
   scanDevTools: () => invoke<ScanResult[]>('scan_dev_tools'),
   uninstallBrew: (name: string) => invoke<boolean>('uninstall_brew', { name }),
   findAssociatedFiles: (appName: string) => invoke<string[]>('find_associated_files', { appName }),

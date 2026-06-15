@@ -113,13 +113,17 @@
     "title": "Homebrew Packages ({{count}})",
     "subtitle": "Manage formulas and casks",
     "confirmUninstall": "Uninstall Homebrew package \"{{name}}\"? This cannot be undone.",
-    "uninstallFailed": "Uninstall failed. Check console for details.",
+    "uninstallFailed": "Failed to uninstall package.",
     "updating": "Updating...",
     "updateBrew": "Update Homebrew",
-    "brewUpdated": "Homebrew updated!",
+    "brewUpdated": "Homebrew has been updated successfully.",
     "showLeavesOnly": "Show Leaves Only",
     "leaf": "LEAF",
-    "uninstall": "Uninstall"
+    "uninstall": "Uninstall",
+    "confirmUpdate": "Update package {{name}}?",
+    "updateSuccess": "{{name}} updated successfully.",
+    "updateFailed": "Failed to update {{name}}.",
+    "updatePackage": "Update Package"
   },
   "privacy": {
     "title": "Privacy & Security",
