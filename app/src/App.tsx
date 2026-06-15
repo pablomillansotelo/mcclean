@@ -109,7 +109,7 @@ function App() {
       case "spacelens":
         return <SpaceLens data={spaceLensData} setData={setSpaceLensData} pathHistory={spaceLensHistory} setPathHistory={setSpaceLensHistory} />;
       case "startup":
-        return <Startup items={startupItems} />;
+        return <Startup items={startupItems} setItems={setStartupItems} />;
       case "privacy":
         return <Privacy data={privacyItems} setData={setPrivacyItems} />;
       case "settings":

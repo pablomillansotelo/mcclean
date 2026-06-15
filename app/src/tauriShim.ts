@@ -12,6 +12,7 @@ export const tauriElectronShim = {
   uninstallBrew: (name: string) => invoke<boolean>('uninstall_brew', { name }),
   findAssociatedFiles: (appName: string) => invoke<string[]>('find_associated_files', { appName }),
   scanStartupItems: () => invoke<StartupItem[]>('scan_startup_items'),
+  toggleStartupItem: (path: string, enable: boolean) => invoke<boolean>('toggle_startup_item', { path, enable }),
   getSystemStats: () => invoke<SystemStats>('get_system_stats'),
   scanPrivacy: () => invoke<ScanResult[]>('scan_privacy'),
   cleanPrivacy: (path: string) => invoke<boolean>('clean_privacy', { path }),

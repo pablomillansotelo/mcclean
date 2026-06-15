@@ -20,6 +20,7 @@ export interface ElectronAPI {
   uninstallBrew: (name: string) => Promise<boolean>;
   findAssociatedFiles: (appName: string) => Promise<string[]>;
   scanStartupItems: () => Promise<StartupItem[]>;
+  toggleStartupItem: (path: string, enable: boolean) => Promise<boolean>;
   getSystemStats: () => Promise<SystemStats>;
   scanPrivacy: () => Promise<ScanResult[]>;
   cleanPrivacy: (path: string) => Promise<boolean>;

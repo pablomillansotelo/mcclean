@@ -100,6 +100,11 @@ async fn scan_startup_items() -> Result<Vec<mcclean_core::startup::StartupItem>,
 }
 
 #[tauri::command]
+async fn toggle_startup_item(path: String, enable: bool) -> Result<bool, String> {
+    mcclean_core::startup::toggle_startup_item(&path, enable)
+}
+
+#[tauri::command]
 async fn get_system_stats() -> Result<mcclean_core::sys::SystemStats, String> {
     mcclean_core::sys::get_system_stats()
 }
@@ -254,6 +259,7 @@ pub fn run() {
             uninstall_brew,
             find_associated_files,
             scan_startup_items,
+            toggle_startup_item,
             get_system_stats,
             scan_privacy,
             clean_privacy,
