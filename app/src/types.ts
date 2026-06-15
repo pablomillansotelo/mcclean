@@ -28,4 +28,15 @@ export interface SystemStats {
     cores: number;
     model: string;
   };
+  disk: {
+    free: number;
+    total: number;
+  };
+  uptime: number;
+}
+
+export interface DuplicateGroup {
+  hash: string;
+  size: number;
+  files: string[];
 }

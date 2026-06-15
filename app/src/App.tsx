@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { Sidebar } from "./components/Sidebar";
 import { Dashboard } from "./components/Dashboard";
 import { LargeFiles } from "./components/LargeFiles";
-import { Cleaner } from "./components/Cleaner";
 import { Settings } from "./components/Settings";
 import { Applications } from "./components/Applications";
 import { Homebrew } from "./components/Homebrew";
@@ -111,7 +110,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <Sidebar activeView={activeView} onNavigate={setActiveView} theme={theme} setTheme={setTheme} />
+      <Sidebar activeView={activeView} onNavigate={setActiveView} />
       <main className="main-content">
         <div className="draggable" style={{ height: "40px", width: "100%", position: "absolute", top: 0, left: 0 }} />
         {renderView()}

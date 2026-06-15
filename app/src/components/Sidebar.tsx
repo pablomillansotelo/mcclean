@@ -1,4 +1,4 @@
-import { LayoutDashboard, HardDrive, Trash2, Settings, AppWindow, Coffee, Code2, Zap, Shield, Grid, Files, Moon, Sun } from "lucide-react";
+import { LayoutDashboard, HardDrive, Trash2, Settings, AppWindow, Coffee, Code2, Zap, Shield, Grid, Files } from "lucide-react";
 import "./Sidebar.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,11 +7,9 @@ import { SystemStats } from "../types";
 interface SidebarProps {
   activeView: string;
   onNavigate: (view: string) => void;
-  theme: string;
-  setTheme: (t: string) => void;
 }
 
-export function Sidebar({ activeView, onNavigate, theme, setTheme }: SidebarProps) {
+export function Sidebar({ activeView, onNavigate }: SidebarProps) {
   const { t } = useTranslation();
   
   const navGroups = [
