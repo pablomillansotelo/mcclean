@@ -20,14 +20,15 @@ interface DuplicateGroup {
   }[];
 }
 
-export function DuplicateFinder({ results, setResults }: { results: DuplicateGroup[], setResults: React.Dispatch<React.SetStateAction<DuplicateGroup[]>> }) {
-  const [scanning, setScanning] = useState(false);
+export function DuplicateFinder({ results, setResults, isScanning: externalScanning }: { results: DuplicateGroup[], setResults: React.Dispatch<React.SetStateAction<DuplicateGroup[]>>, isScanning?: boolean }) {
+  const [internalScanning, setInternalScanning] = useState(false);
+  const scanning = internalScanning || externalScanning;
   const [progress, setProgress] = useState({ progress: 0, status: "" });
   const [selectedFiles, setSelectedFiles] = useState<Set<string>>(new Set());
   const { t } = useTranslation();
 
   const handleScan = () => {
-    setScanning(true);
+    setInternalScanning(true);
     setResults([]);
     setSelectedFiles(new Set());
     setProgress({ progress: 1, status: "Starting..." });
@@ -42,11 +43,11 @@ export function DuplicateFinder({ results, setResults }: { results: DuplicateGro
       .scanDuplicates()
       .then((res) => {
         setResults(res);
-        setScanning(false);
+        setInternalScanning(false);
         removeListener();
       })
       .catch(() => {
-        setScanning(false);
+        setInternalScanning(false);
         removeListener();
       });
   };

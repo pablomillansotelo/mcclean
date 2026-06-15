@@ -36,12 +36,14 @@ function App() {
 
   // Persistent state for interactive tools
   const [duplicateResults, setDuplicateResults] = useState<any[]>([]);
+  const [isScanningDuplicates, setIsScanningDuplicates] = useState(false);
   const [spaceLensHistory, setSpaceLensHistory] = useState<string[]>([]);
   const [spaceLensData, setSpaceLensData] = useState<ScanResult[]>([]);
 
   const handleScan = async () => {
     setScanning(true);
     setHasScanned(true);
+    setIsScanningDuplicates(true);
     try {
       // Parallel scan
       const [systemData, files, appsData, brewData, devData, startupData, privacyData] = await Promise.all([
@@ -53,6 +55,15 @@ function App() {
         window.electron.scanStartupItems().catch(e => { console.error("Startup scan error:", e); return []; }),
         window.electron.scanPrivacy().catch(e => { console.error("Privacy scan error:", e); return []; }),
       ]);
+
+      // Fire duplicate scan in the background so it doesn't block the dashboard
+      window.electron.scanDuplicates().then(dupData => {
+        setDuplicateResults(dupData || []);
+        setIsScanningDuplicates(false);
+      }).catch(e => {
+        console.error("Duplicates scan error:", e);
+        setIsScanningDuplicates(false);
+      });
 
       setSystemItems(systemData || []);
       setResults(files || []);
@@ -88,7 +99,7 @@ function App() {
       case "large-files":
         return <LargeFiles results={results} onDelete={handleDelete} />;
       case "duplicates":
-        return <DuplicateFinder results={duplicateResults} setResults={setDuplicateResults} />;
+        return <DuplicateFinder results={duplicateResults} setResults={setDuplicateResults} isScanning={isScanningDuplicates} />;
       case "apps":
         return <Applications data={apps} setData={setApps} />;
       case "homebrew":
