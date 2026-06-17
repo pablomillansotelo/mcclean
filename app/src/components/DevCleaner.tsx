@@ -1,4 +1,4 @@
-import { Trash2, Code2, AppWindow, HardDrive, Package } from "lucide-react";
+import { Trash2, Code2, AppWindow, HardDrive, Package, FolderX } from "lucide-react";
 import { ScanResult } from "../types";
 import { useTranslation } from "react-i18next";
 
@@ -46,45 +46,40 @@ export function DevCleaner({ data: items, setData: setItems, currentPath, onPath
 
   return (
     <div className="content-view">
-        <div className="section-header">
-          <div className="title-row">
-            <Code2 size={24} className="text-blue-400" />
-            <h2 className="text-xl font-semibold text-white">{t('devCleaner.title')}</h2>
-          </div>
-          <div className="actions-row">
-            <span className="text-sm text-gray-400 mr-4">
-              {currentPath ? `Carpeta: ${currentPath}` : "Ninguna carpeta seleccionada"}
-            </span>
-            <button className="btn-primary text-sm px-4 py-2" onClick={handleSelectFolder}>
-              Seleccionar Carpeta
-            </button>
-          </div>
+      <div className="view-header flex justify-between items-start">
+        <div>
+          <h2>{t('devCleaner.title', { count: items.length })}</h2>
+          <p className="text-sm text-white/50">{t('devCleaner.subtitle')} {currentPath ? `(Escaneando: ${currentPath})` : "(Usando configuración predeterminada)"}</p>
         </div>
+        <button className="primary-button text-sm px-4 py-2 flex items-center gap-2" onClick={handleSelectFolder}>
+          <FolderX size={16} /> Seleccionar Carpeta
+        </button>
+      </div>
 
       <div className="file-list">
         {items.map((item, i) => {
-                  let TypeIcon = Package;
-                  if (item.type?.includes("Node")) TypeIcon = Code2;
-                  else if (item.type?.includes("Python")) TypeIcon = Code2;
-                  else if (item.type?.includes("Docker") || item.type?.includes("Podman")) TypeIcon = AppWindow;
-                  else if (item.type?.includes("Rust")) TypeIcon = Code2;
-                  else if (item.type?.includes("Nix")) TypeIcon = HardDrive;
-                  
-                  const isRunning = item.type?.includes("Running");
+          let TypeIcon = Package;
+          if (item.type?.includes("Node")) TypeIcon = Code2;
+          else if (item.type?.includes("Python")) TypeIcon = Code2;
+          else if (item.type?.includes("Docker") || item.type?.includes("Podman")) TypeIcon = AppWindow;
+          else if (item.type?.includes("Rust")) TypeIcon = Code2;
+          else if (item.type?.includes("Nix")) TypeIcon = HardDrive;
+          
+          const isRunning = item.type?.includes("Running");
 
           return (
             <div key={i} className="file-item">
               <div className="file-icon"><TypeIcon size={20} /></div>
-              <div className="flex flex-col">
-                <span className={`font-medium ${isRunning ? 'text-yellow-400' : 'text-gray-200'}`}>
+              <div className="file-info">
+                <div className={`file-name ${isRunning ? 'text-yellow-400' : ''}`}>
                   {item.name}
-                </span>
-                <span className="text-sm text-gray-500 truncate max-w-[400px]" title={item.path}>
+                </div>
+                <div className="file-path" title={item.path}>
                   {item.path}
-                </span>
-                <span className="text-xs text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded mt-1 w-fit">
+                </div>
+                <div style={{ fontSize: "10px", opacity: 0.8, marginTop: "4px", color: "#60a5fa", background: "rgba(96, 165, 250, 0.1)", display: "inline-block", padding: "2px 6px", borderRadius: "4px" }}>
                   {item.type || 'Unknown'}
-                </span>
+                </div>
               </div>
               <div className="file-size">{(item.size / 1024 / 1024).toFixed(2)} MB</div>
               <button className="action-btn delete-btn" onClick={() => handleDelete(item.path, item.type)} title={t('devCleaner.moveToTrash')}>
