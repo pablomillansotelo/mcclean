@@ -1,4 +1,4 @@
-import { Trash2, Coffee, Download } from "lucide-react";
+import { Trash2, Coffee, Download, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { ScanResult } from "../types";
 import { useTranslation } from "react-i18next";
@@ -26,9 +26,9 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
     // Determine the actual package name by stripping " (Outdated)"
     const actualName = name.replace(" (Outdated)", "");
     if (confirm(t('homebrew.confirmUpdate', { name: actualName }))) {
-      setUpdating(true);
+      setUpdatingTarget(name);
       const success = await window.electron.updateBrewPackage(actualName);
-      setUpdating(false);
+      setUpdatingTarget(null);
       if (success) {
         setPackages((prev) =>
           prev.map((p) =>
@@ -42,13 +42,13 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
     }
   };
 
-  const [updating, setUpdating] = useState(false);
+  const [updatingTarget, setUpdatingTarget] = useState<string | null>(null);
   const [showLeavesOnly, setShowLeavesOnly] = useState(false);
 
   const handleUpdate = async () => {
-    setUpdating(true);
+    setUpdatingTarget("ALL");
     await window.electron.updateBrew();
-    setUpdating(false);
+    setUpdatingTarget(null);
     alert(t('homebrew.brewUpdated'));
   };
 
@@ -60,8 +60,9 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
         <h2>{t('homebrew.title', { count: packages.length })}</h2>
         <p className="text-sm text-white/50">{t('homebrew.subtitle')}</p>
         <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
-          <button className="secondary-button" onClick={handleUpdate} disabled={updating}>
-            {updating ? t('homebrew.updating') : t('homebrew.updateBrew')}
+          <button className="secondary-button" style={{ display: "flex", alignItems: "center", gap: "8px" }} onClick={handleUpdate} disabled={updatingTarget !== null}>
+            {updatingTarget === "ALL" && <Loader2 className="animate-spin" size={16} />}
+            {updatingTarget === "ALL" ? t('homebrew.updating') : t('homebrew.updateBrew')}
           </button>
           <label style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "12px" }}>
             <input type="checkbox" checked={showLeavesOnly} onChange={(e) => setShowLeavesOnly(e.target.checked)} />
@@ -90,12 +91,12 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
                   style={{ color: "#0a84ff" }}
                   onClick={() => handleUpdatePackage(pkg.name)}
                   title={t('homebrew.updatePackage')}
-                  disabled={updating}
+                  disabled={updatingTarget !== null}
                 >
-                  <Download size={16} />
+                  {updatingTarget === pkg.name ? <Loader2 className="animate-spin" size={16} /> : <Download size={16} />}
                 </button>
               )}
-              <button className="action-btn delete-btn" onClick={() => handleUninstall(pkg.name)} title={t('homebrew.uninstall')} disabled={updating}>
+              <button className="action-btn delete-btn" onClick={() => handleUninstall(pkg.name)} title={t('homebrew.uninstall')} disabled={updatingTarget !== null}>
                 <Trash2 size={16} />
               </button>
             </div>

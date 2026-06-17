@@ -1,4 +1,4 @@
-import { Trash2, Code2, AppWindow, HardDrive, Package, FolderX } from "lucide-react";
+import { Trash2, Code2, AppWindow, HardDrive, Package, FolderX, Loader2 } from "lucide-react";
 import { ScanResult } from "../types";
 import { useTranslation } from "react-i18next";
 
@@ -8,10 +8,11 @@ interface DevCleanerProps {
   data: ScanResult[];
   setData: React.Dispatch<React.SetStateAction<ScanResult[]>>;
   currentPath?: string;
+  isScanning?: boolean;
   onPathChange?: (path: string) => void;
 }
 
-export function DevCleaner({ data: items, setData: setItems, currentPath, onPathChange }: DevCleanerProps) {
+export function DevCleaner({ data: items, setData: setItems, currentPath, isScanning, onPathChange }: DevCleanerProps) {
   const { t } = useTranslation();
 
   const handleDelete = async (path: string, type?: string) => {
@@ -48,10 +49,13 @@ export function DevCleaner({ data: items, setData: setItems, currentPath, onPath
     <div className="content-view">
       <div className="view-header flex justify-between items-start">
         <div>
-          <h2>{t('devCleaner.title', { count: items.length })}</h2>
+          <h2 className="flex items-center gap-2">
+            {t('devCleaner.title', { count: items.length })}
+            {isScanning && <Loader2 className="animate-spin text-blue-400" size={20} />}
+          </h2>
           <p className="text-sm text-white/50">{t('devCleaner.subtitle')} {currentPath ? `(Escaneando: ${currentPath})` : "(Usando configuración predeterminada)"}</p>
         </div>
-        <button className="primary-button text-sm px-4 py-2 flex items-center gap-2" onClick={handleSelectFolder}>
+        <button className="primary-button text-sm px-4 py-2 flex items-center gap-2" disabled={isScanning} onClick={handleSelectFolder}>
           <FolderX size={16} /> Seleccionar Carpeta
         </button>
       </div>

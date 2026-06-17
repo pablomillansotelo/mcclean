@@ -41,6 +41,7 @@ function App() {
   // Persistent state for interactive tools
   const [duplicateResults, setDuplicateResults] = useState<any[]>([]);
   const [isScanningDuplicates, setIsScanningDuplicates] = useState(false);
+  const [isScanningDevTools, setIsScanningDevTools] = useState(false);
   const [spaceLensHistory, setSpaceLensHistory] = useState<string[]>([]);
   const [spaceLensData, setSpaceLensData] = useState<ScanResult[]>([]);
 
@@ -113,10 +114,18 @@ function App() {
           data={devItems} 
           setData={setDevItems} 
           currentPath={devToolsPath}
+          isScanning={scanning || isScanningDevTools}
           onPathChange={(newPath) => {
             setDevToolsPath(newPath);
             localStorage.setItem("devToolsPath", newPath);
-            window.electron.scanDevTools(newPath).then(data => setDevItems(data || []));
+            setIsScanningDevTools(true);
+            window.electron.scanDevTools(newPath).then(data => {
+              setDevItems(data || []);
+              setIsScanningDevTools(false);
+            }).catch(e => {
+              console.error(e);
+              setIsScanningDevTools(false);
+            });
           }}
         />;
       case "spacelens":
