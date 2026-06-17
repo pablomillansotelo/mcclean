@@ -14,7 +14,7 @@ import { Startup } from "./components/Startup";
 import { ProcessManager } from "./components/ProcessManager";
 import { DuplicateFinder } from "./components/DuplicateFinder";
 import { ScanResult, StartupItem } from "./types";
-import "./App.css";
+
 
 function App() {
   const [activeView, setActiveView] = useState("dashboard");

@@ -1,3 +1,14 @@
+@import "tailwindcss";
+
+@theme {
+  --color-glass: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-item: var(--item-bg);
+  --color-item-hover: var(--item-bg-hover);
+  --shadow-lg-custom: var(--shadow-lg);
+  --font-sans: var(--font-main);
+}
+
 :root {
   --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --app-region-drag: drag;
@@ -98,4 +109,188 @@ body {
 }
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+.app-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-content {
+  flex: 1;
+  position: relative;
+  overflow-y: auto;
+  padding: 40px; 
+  padding-top: 24px;
+}
+
+.draggable {
+  -webkit-app-region: drag;
+  z-index: 50;
+}
+
+
+.view-header {
+  margin-bottom: 30px;
+}
+
+.view-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--color-text);
+}
+
+.file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  background: var(--item-bg);
+  border: 1px solid var(--glass-border);
+  padding: 16px 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.file-item:hover {
+  background: var(--item-bg-hover);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+.file-icon {
+  margin-right: 20px;
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: rgba(192, 38, 211, 0.1); /* Magenta 0.1 */
+  border-radius: 10px;
+}
+
+.file-info {
+  flex: 1;
+  overflow: hidden;
+  margin-right: 20px;
+}
+
+.file-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-path {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-size {
+  font-family: monospace;
+  color: var(--color-text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-right: 20px;
+  min-width: 80px;
+  text-align: right;
+}
+
+.action-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  color: rgba(255,255,255,0.4);
+}
+
+.action-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--color-text);
+}
+
+.action-btn.delete-btn:hover {
+  background: rgba(255, 59, 48, 0.15);
+  color: #ff3b30;
+}
+
+.content-view {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.scan-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  max-width: 400px;
+  margin: 40px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  box-shadow: var(--shadow-lg);
+}
+
+.scan-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(192, 38, 211, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-accent);
+  margin-bottom: 10px;
+}
+
+.primary-button {
+  background: var(--color-accent);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.primary-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 122, 255, 0.4);
+}
+
+.primary-button:active {
+  transform: translateY(1px);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
