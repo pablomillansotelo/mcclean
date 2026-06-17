@@ -97,7 +97,7 @@ pub fn get_processes() -> Result<Vec<ProcessInfo>, String> {
     for (pid, process) in sys.processes() {
         processes.push(ProcessInfo {
             pid: pid.as_u32(),
-            name: process.name().to_string(),
+            name: process.name().to_string_lossy().into_owned(),
             memory: process.memory(),
             cpu: process.cpu_usage(),
         });
@@ -111,7 +111,7 @@ pub fn get_processes() -> Result<Vec<ProcessInfo>, String> {
 
 pub fn kill_process(pid: u32) -> Result<bool, String> {
     let mut sys = System::new_all();
-    sys.refresh_processes();
+    sys.refresh_processes(sysinfo::ProcessesToUpdate::All, true);
     
     let pid_sysinfo = sysinfo::Pid::from_u32(pid);
     if let Some(process) = sys.process(pid_sysinfo) {

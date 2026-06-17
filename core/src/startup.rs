@@ -25,7 +25,12 @@ pub fn scan_startup_items() -> Result<Vec<StartupItem>, String> {
     }
 
     // Get disabled lists
-    let uid = unsafe { libc::getuid() };
+    let uid = std::process::Command::new("id")
+        .arg("-u")
+        .output()
+        .map(|o| String::from_utf8_lossy(&o.stdout).trim().to_string())
+        .unwrap_or_else(|_| "501".to_string());
+        
     let gui_disabled = std::process::Command::new("launchctl")
         .arg("print-disabled")
         .arg(format!("gui/{}", uid))
