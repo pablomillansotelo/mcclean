@@ -22,6 +22,7 @@ pub struct ScanResult {
     pub is_directory: bool,
     pub modified: Option<SystemTime>,
     pub category: String,
+    #[serde(rename = "type")]
     pub scan_type: String, // 'type' is a reserved keyword in Rust
 }
 

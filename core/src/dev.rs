@@ -90,10 +90,10 @@ pub fn scan_dev_tools(base_path: &str) -> Result<Vec<ScanResult>, String> {
                     name: entry.path().file_name().unwrap_or_default().to_string_lossy().into_owned(),
                     path: entry.path().to_string_lossy().into_owned(),
                     size,
-                    r#type: Some(t.to_string()),
+                    is_directory: true,
+                    modified: None,
+                    scan_type: t.to_string(),
                     category: "Developer Tools".to_string(),
-                    last_accessed: None,
-                    is_safe_to_delete: true,
                 });
                 it.skip_current_dir(); // Don't scan inside node_modules etc
             }
@@ -116,10 +116,10 @@ pub fn scan_dev_tools(base_path: &str) -> Result<Vec<ScanResult>, String> {
                             name: format!("{} Image: {}", engine, repo),
                             path: format!("{}:image:{}", engine, id),
                             size: parse_size(size_str),
-                            r#type: Some(if engine == "docker" { "Docker Image".to_string() } else { "Podman Image".to_string() }),
+                            is_directory: false,
+                            modified: None,
+                            scan_type: if engine == "docker" { "Docker Image".to_string() } else { "Podman Image".to_string() },
                             category: "Developer Tools".to_string(),
-                            last_accessed: None,
-                            is_safe_to_delete: true,
                         });
                     }
                 }
@@ -145,10 +145,10 @@ pub fn scan_dev_tools(base_path: &str) -> Result<Vec<ScanResult>, String> {
                             name: format!("{} Container: {} {}", engine, names, if is_running { "(Corriendo)" } else { "(Detenido)" }),
                             path: format!("{}:container:{}", engine, id),
                             size: parse_size(actual_size_str),
-                            r#type: Some(if is_running { format!("{} Running", engine) } else { format!("{} Container", engine) }),
+                            is_directory: false,
+                            modified: None,
+                            scan_type: if is_running { format!("{} Running", engine) } else { format!("{} Container", engine) },
                             category: "Developer Tools".to_string(),
-                            last_accessed: None,
-                            is_safe_to_delete: !is_running,
                         });
                     }
                 }
@@ -166,10 +166,10 @@ pub fn scan_dev_tools(base_path: &str) -> Result<Vec<ScanResult>, String> {
                         name: format!("Nix Package: {}", line.trim()),
                         path: format!("nix:pkg:{}", line.trim()),
                         size: 0,
-                        r#type: Some("Nix Env".to_string()),
+                        is_directory: false,
+                        modified: None,
+                        scan_type: "Nix Env".to_string(),
                         category: "Developer Tools".to_string(),
-                        last_accessed: None,
-                        is_safe_to_delete: true,
                     });
                 }
             }
@@ -182,10 +182,10 @@ pub fn scan_dev_tools(base_path: &str) -> Result<Vec<ScanResult>, String> {
             name: "Nix Garbage Collection (Limpiar Generaciones Viejas)".to_string(),
             path: "nix:gc:".to_string(),
             size: 0,
-            r#type: Some("Nix GC".to_string()),
+            is_directory: false,
+            modified: None,
+            scan_type: "Nix GC".to_string(),
             category: "Developer Tools".to_string(),
-            last_accessed: None,
-            is_safe_to_delete: true,
         });
     }
 
