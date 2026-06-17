@@ -47,15 +47,15 @@ export function DevCleaner({ data: items, setData: setItems, currentPath, isScan
 
   return (
     <div className="content-view">
-      <div className="view-header flex justify-between items-start">
+      <div className="view-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div>
-          <h2 className="flex items-center gap-2">
+          <h2 style={{ display: "flex", alignItems: "center", gap: "8px", margin: 0 }}>
             {t('devCleaner.title', { count: items.length })}
-            {isScanning && <Loader2 className="animate-spin text-blue-400" size={20} />}
+            {isScanning && <Loader2 className="animate-spin" size={20} style={{ color: "#60a5fa" }} />}
           </h2>
           <p className="text-sm text-white/50">{t('devCleaner.subtitle')} {currentPath ? `(Escaneando: ${currentPath})` : "(Usando configuración predeterminada)"}</p>
         </div>
-        <button className="primary-button text-sm px-4 py-2 flex items-center gap-2" disabled={isScanning} onClick={handleSelectFolder}>
+        <button className="primary-button" style={{ fontSize: "14px", padding: "8px 16px", display: "flex", alignItems: "center", gap: "8px" }} disabled={isScanning} onClick={handleSelectFolder}>
           <FolderX size={16} /> Seleccionar Carpeta
         </button>
       </div>
