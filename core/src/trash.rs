@@ -1,4 +1,5 @@
 use std::fs;
+use std::process::Command;
 
 pub fn get_trash_size() -> Result<u64, String> {
     let home = match dirs::home_dir() {
@@ -14,13 +15,33 @@ pub fn get_trash_size() -> Result<u64, String> {
     }
 }
 
-pub fn move_to_trash(path_str: &str) -> Result<bool, String> {
+pub fn move_to_trash(path: &str) -> Result<bool, String> {
+    // Intercept special virtual paths
+    if path.starts_with("docker:image:") {
+        let id = path.replace("docker:image:", "");
+        return Command::new("docker").arg("rmi").arg("-f").arg(&id).status().map(|s| s.success()).map_err(|e| e.to_string());
+    } else if path.starts_with("docker:container:") {
+        let id = path.replace("docker:container:", "");
+        return Command::new("docker").arg("rm").arg("-f").arg(&id).status().map(|s| s.success()).map_err(|e| e.to_string());
+    } else if path.starts_with("podman:image:") {
+        let id = path.replace("podman:image:", "");
+        return Command::new("podman").arg("rmi").arg("-f").arg(&id).status().map(|s| s.success()).map_err(|e| e.to_string());
+    } else if path.starts_with("podman:container:") {
+        let id = path.replace("podman:container:", "");
+        return Command::new("podman").arg("rm").arg("-f").arg(&id).status().map(|s| s.success()).map_err(|e| e.to_string());
+    } else if path.starts_with("nix:pkg:") {
+        let pkg = path.replace("nix:pkg:", "");
+        return Command::new("nix-env").arg("-e").arg(&pkg).status().map(|s| s.success()).map_err(|e| e.to_string());
+    } else if path == "nix:gc:" {
+        return Command::new("nix-collect-garbage").arg("-d").status().map(|s| s.success()).map_err(|e| e.to_string());
+    }
+
     let home = match dirs::home_dir() {
         Some(h) => h,
         None => return Err("Home directory not found".to_string()),
     };
 
-    let target_path = std::path::Path::new(path_str);
+    let target_path = std::path::Path::new(path);
     if !target_path.exists() {
         return Ok(false);
     }

@@ -31,6 +31,9 @@ function App() {
   const [apps, setApps] = useState<ScanResult[]>([]);
   const [brew, setBrew] = useState<ScanResult[]>([]);
   const [devItems, setDevItems] = useState<ScanResult[]>([]);
+  const [devToolsPath, setDevToolsPath] = useState<string>(
+    localStorage.getItem("devToolsPath") || ""
+  );
   const [startupItems, setStartupItems] = useState<StartupItem[]>([]);
   const [privacyItems, setPrivacyItems] = useState<ScanResult[]>([]);
   const [systemItems, setSystemItems] = useState<ScanResult[]>([]); // System Cleaner State
@@ -52,7 +55,7 @@ function App() {
         window.electron.startScan("").catch(e => { console.error("Files scan error:", e); return []; }),
         window.electron.scanApps().catch(e => { console.error("Apps scan error:", e); return []; }),
         window.electron.scanBrew().catch(e => { console.error("Brew scan error:", e); return []; }),
-        window.electron.scanDevTools().catch(e => { console.error("Dev scan error:", e); return []; }),
+        window.electron.scanDevTools(devToolsPath).catch(e => { console.error("Dev scan error:", e); return []; }),
         window.electron.scanStartupItems().catch(e => { console.error("Startup scan error:", e); return []; }),
         window.electron.scanPrivacy().catch(e => { console.error("Privacy scan error:", e); return []; }),
       ]);
@@ -106,7 +109,16 @@ function App() {
       case "homebrew":
         return <Homebrew data={brew} setData={setBrew} />;
       case "devtools":
-        return <DevCleaner data={devItems} setData={setDevItems} />;
+        return <DevCleaner 
+          data={devItems} 
+          setData={setDevItems} 
+          currentPath={devToolsPath}
+          onPathChange={(newPath) => {
+            setDevToolsPath(newPath);
+            localStorage.setItem("devToolsPath", newPath);
+            window.electron.scanDevTools(newPath).then(data => setDevItems(data || []));
+          }}
+        />;
       case "spacelens":
         return <SpaceLens data={spaceLensData} setData={setSpaceLensData} pathHistory={spaceLensHistory} setPathHistory={setSpaceLensHistory} />;
       case "startup":

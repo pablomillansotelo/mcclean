@@ -12,6 +12,7 @@ pub mod privacy;
 pub mod trash;
 pub mod space;
 pub mod sys;
+pub mod dev;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ScanResult {

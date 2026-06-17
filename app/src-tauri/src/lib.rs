@@ -80,8 +80,8 @@ async fn update_brew_package(name: String) -> Result<bool, String> {
 }
 
 #[tauri::command]
-async fn scan_dev_tools() -> Result<Vec<ScanResult>, String> {
-    Ok(vec![])
+async fn scan_dev_tools(path: String) -> Result<Vec<ScanResult>, String> {
+    mcclean_core::dev::scan_dev_tools(&path)
 }
 
 #[tauri::command]
