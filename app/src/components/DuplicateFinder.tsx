@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Loader2 } from "lucide-react";
 
 function formatBytes(bytes: number, decimals = 2) {
   if (!+bytes) return "0 Bytes";
@@ -157,11 +158,12 @@ export function DuplicateFinder({ results, setResults, isScanning: externalScann
       )}
 
       {scanning && (
-        <div className="scanning-state">
-          <div className="progress-container">
+        <div className="scanning-state flex flex-col items-center justify-center gap-4 py-10">
+          <Loader2 className="animate-spin text-accent" size={40} />
+          <div className="progress-container w-full max-w-md">
             <div className="progress-bar" style={{ width: `${progress.progress}%` }}></div>
           </div>
-          <p className="status-text">{progress.status}</p>
+          <p className="status-text text-sm opacity-70">{progress.status}</p>
         </div>
       )}
 

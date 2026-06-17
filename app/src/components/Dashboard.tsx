@@ -1,4 +1,4 @@
-import { LayoutDashboard, Package, Coffee, Code2, HardDrive } from "lucide-react";
+import { LayoutDashboard, Package, Coffee, Code2, HardDrive, Loader2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ScanResult } from "../types";
 
@@ -167,7 +167,8 @@ export function Dashboard({ scanning, hasScanned, results, apps, brew, devItems,
           </div>
 
           <div style={{ textAlign: "center", marginTop: "40px" }}>
-            <button className="primary-button" onClick={onScan} disabled={scanning}>
+            <button className="primary-button flex items-center justify-center gap-2 mx-auto" onClick={onScan} disabled={scanning}>
+              {scanning && <Loader2 className="animate-spin" size={16} />}
               {scanning ? t('dashboard.rescanning') : t('dashboard.rescanSystem')}
             </button>
           </div>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { ScanResult } from "../types";
-import { HardDrive, RefreshCw, Trash2, AlertTriangle, FileText, Database } from "lucide-react";
+import { HardDrive, RefreshCw, Trash2, AlertTriangle, FileText, Database, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import "./SystemCleaner.css";
 
@@ -69,7 +69,7 @@ export function SystemCleaner({ data, setData }: SystemCleanerProps) {
         <h2>{t('systemCleaner.title')}</h2>
         <div style={{ display: "flex", gap: "10px" }}>
           <button className="secondary-button" onClick={scanSystem} disabled={loading}>
-            <RefreshCw size={16} className={loading ? "spin" : ""} />
+            <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
             {t('systemCleaner.rescan')}
           </button>
           {selectedItems.size > 0 && (
@@ -102,7 +102,10 @@ export function SystemCleaner({ data, setData }: SystemCleanerProps) {
 
       <div className="file-list">
         {loading ? (
-          <div className="empty-state">{t('systemCleaner.scanning')}</div>
+          <div className="empty-state flex flex-col items-center justify-center gap-4">
+            <Loader2 className="animate-spin text-accent" size={32} />
+            {t('systemCleaner.scanning')}
+          </div>
         ) : data.length === 0 ? (
           <div className="empty-state">{t('systemCleaner.noJunk')}</div>
         ) : (
