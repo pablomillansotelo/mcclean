@@ -22,6 +22,8 @@ export interface ElectronAPI {
   scanStartupItems: () => Promise<StartupItem[]>;
   toggleStartupItem: (path: string, enable: boolean) => Promise<boolean>;
   getSystemStats: () => Promise<SystemStats>;
+  getProcesses: () => Promise<ProcessInfo[]>;
+  killProcess: (pid: number) => Promise<boolean>;
   scanPrivacy: () => Promise<ScanResult[]>;
   cleanPrivacy: (path: string) => Promise<boolean>;
   openSecuritySettings: () => Promise<boolean>;

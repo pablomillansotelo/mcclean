@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
-import { ScanResult, StartupItem, SystemStats, DuplicateGroup } from './types';
+import { ScanResult, StartupItem, SystemStats, DuplicateGroup, ProcessInfo } from './types';
 
 export const tauriElectronShim = {
   startScan: (path: string) => invoke<ScanResult[]>('start_scan', { path }),
@@ -14,6 +14,8 @@ export const tauriElectronShim = {
   scanStartupItems: () => invoke<StartupItem[]>('scan_startup_items'),
   toggleStartupItem: (path: string, enable: boolean) => invoke<boolean>('toggle_startup_item', { path, enable }),
   getSystemStats: () => invoke<SystemStats>('get_system_stats'),
+  getProcesses: () => invoke<ProcessInfo[]>('get_processes'),
+  killProcess: (pid: number) => invoke<boolean>('kill_process', { pid }),
   scanPrivacy: () => invoke<ScanResult[]>('scan_privacy'),
   cleanPrivacy: (path: string) => invoke<boolean>('clean_privacy', { path }),
   openSecuritySettings: () => invoke<boolean>('open_security_settings'),

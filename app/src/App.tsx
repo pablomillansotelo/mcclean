@@ -11,6 +11,7 @@ import { Privacy } from "./components/Privacy";
 import { SpaceLens } from "./components/SpaceLens";
 import { SystemCleaner } from "./components/SystemCleaner";
 import { Startup } from "./components/Startup";
+import { ProcessManager } from "./components/ProcessManager";
 import { DuplicateFinder } from "./components/DuplicateFinder";
 import { ScanResult, StartupItem } from "./types";
 import "./App.css";
@@ -112,6 +113,8 @@ function App() {
         return <Startup items={startupItems} setItems={setStartupItems} />;
       case "privacy":
         return <Privacy data={privacyItems} setData={setPrivacyItems} />;
+      case "processes":
+        return <ProcessManager />;
       case "settings":
         return <Settings onRescan={handleScan} theme={theme} setTheme={setTheme} />;
       default:

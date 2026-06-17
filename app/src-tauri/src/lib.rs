@@ -110,6 +110,16 @@ async fn get_system_stats() -> Result<mcclean_core::sys::SystemStats, String> {
 }
 
 #[tauri::command]
+async fn get_processes() -> Result<Vec<mcclean_core::sys::ProcessInfo>, String> {
+    mcclean_core::sys::get_processes()
+}
+
+#[tauri::command]
+async fn kill_process(pid: u32) -> Result<bool, String> {
+    mcclean_core::sys::kill_process(pid)
+}
+
+#[tauri::command]
 async fn scan_privacy() -> Result<Vec<ScanResult>, String> {
     mcclean_core::privacy::scan_privacy()
 }
@@ -261,6 +271,8 @@ pub fn run() {
             scan_startup_items,
             toggle_startup_item,
             get_system_stats,
+            get_processes,
+            kill_process,
             scan_privacy,
             clean_privacy,
             open_security_settings,

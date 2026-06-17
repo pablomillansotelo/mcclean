@@ -1,4 +1,4 @@
-import { LayoutDashboard, HardDrive, Trash2, Settings, AppWindow, Coffee, Code2, Zap, Shield, Grid, Files } from "lucide-react";
+import { LayoutDashboard, HardDrive, Trash2, Settings, AppWindow, Coffee, Code2, Zap, Shield, Grid, Files, Activity } from "lucide-react";
 import "./Sidebar.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,8 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
     {
       title: t('sidebar.general'),
       items: [
-        { id: "dashboard", label: t('sidebar.overview'), icon: LayoutDashboard }
+        { id: "dashboard", label: t('sidebar.overview'), icon: LayoutDashboard },
+        { id: "processes", label: t('sidebar.processes', 'Procesos'), icon: Activity }
       ]
     },
     {

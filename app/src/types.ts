@@ -35,6 +35,13 @@ export interface SystemStats {
   uptime: number;
 }
 
+export interface ProcessInfo {
+  pid: number;
+  name: string;
+  memory: number;
+  cpu: number;
+}
+
 export interface DuplicateGroup {
   hash: string;
   size: number;
