@@ -19,6 +19,42 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
   // Vibrant colors for visualization
   const colors = ["#ef4444", "#f97316", "#f59e0b", "#10b981", "#3b82f6", "#6366f1", "#8b5cf6", "#ec4899", "#14b8a6", "#f43f5e"];
 
+  const getFileCategory = (filename: string) => {
+    const ext = filename.split('.').pop()?.toLowerCase();
+    if (!ext || ext === filename.toLowerCase()) return t('spaceLens.catOther', 'Otros Archivos');
+    if (['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'bmp', 'heic', 'icns'].includes(ext)) return t('spaceLens.catImages', 'Imágenes');
+    if (['mp4', 'mov', 'avi', 'mkv', 'webm'].includes(ext)) return t('spaceLens.catVideos', 'Videos');
+    if (['mp3', 'wav', 'ogg', 'flac', 'm4a'].includes(ext)) return t('spaceLens.catAudio', 'Audio');
+    if (['pdf', 'doc', 'docx', 'txt', 'rtf', 'pages', 'csv', 'md'].includes(ext)) return t('spaceLens.catDocs', 'Documentos');
+    if (['zip', 'tar', 'gz', 'rar', '7z'].includes(ext)) return t('spaceLens.catArchives', 'Comprimidos');
+    if (['dmg', 'pkg', 'exe', 'app', 'iso'].includes(ext)) return t('spaceLens.catApps', 'Instaladores/Apps');
+    if (['js', 'ts', 'jsx', 'tsx', 'json', 'html', 'css', 'rs', 'py', 'go', 'c', 'cpp'].includes(ext)) return t('spaceLens.catCode', 'Código');
+    return t('spaceLens.catOther', 'Otros Archivos');
+  };
+
+  const processedData = () => {
+    const dirs = data.filter(d => d.isDirectory);
+    const files = data.filter(d => !d.isDirectory);
+
+    const grouped: Record<string, { count: number, size: number }> = {};
+    
+    files.forEach(f => {
+      const cat = getFileCategory(f.name);
+      if (!grouped[cat]) grouped[cat] = { count: 0, size: 0 };
+      grouped[cat].count += 1;
+      grouped[cat].size += f.size;
+    });
+
+    const categoryItems = Object.keys(grouped).map(cat => ({
+      name: `${cat} - ${grouped[cat].count} ${t('spaceLens.files', 'archivos')}`,
+      path: `group://${cat}`,
+      size: grouped[cat].size,
+      isDirectory: false,
+      isGroup: true
+    }));
+
+    return [...dirs, ...categoryItems].sort((a, b) => b.size - a.size);
+  };
 
   useEffect(() => {
     if (!scanning) return;
@@ -129,7 +165,7 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
 
       {!scanning && data.length > 0 && (
         <div style={{ height: "calc(100vh - 200px)", width: "100%", display: "flex", flexWrap: "wrap", gap: "5px", padding: "10px", alignContent: "flex-start", overflowY: "auto" }}>
-          {data.map((item, i) => {
+          {processedData().map((item: any, i) => {
             const percentage = totalSize > 0 ? (item.size / totalSize) * 100 : 0;
             // Min width so text fits, logic to allow wrapping
             const flexBasis = `${Math.max(percentage, 5)}%`;
@@ -165,8 +201,10 @@ export function SpaceLens({ data, setData, pathHistory, setPathHistory }: SpaceL
                 <div style={{ fontSize: "10px", position: "absolute", bottom: "5px", right: "5px", opacity: 0.8, background: "rgba(0,0,0,0.3)", padding: "2px 6px", borderRadius: "10px" }}>
                   {percentage.toFixed(1)}%
                 </div>
-                {item.isDirectory && (
+                {item.isDirectory ? (
                   <Folder size={24} style={{ position: "absolute", bottom: "10px", left: "10px", opacity: 0.2 }} />
+                ) : (
+                  <div style={{ position: "absolute", bottom: "10px", left: "10px", opacity: 0.2, fontWeight: "bold", fontSize: "20px" }}>*</div>
                 )}
               </div>
             );
