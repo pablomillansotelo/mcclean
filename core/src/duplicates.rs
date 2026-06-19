@@ -6,21 +6,21 @@ use std::io::{self, Read};
 use std::path::PathBuf;
 use walkdir::WalkDir;
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DuplicateGroup {
     pub hash: String,
     pub size: u64,
     pub files: Vec<DuplicateFile>,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct DuplicateFile {
     pub path: String,
     pub name: String,
     pub modified: String,
 }
 
-fn hash_file(path: &str) -> io::Result<String> {
+pub fn hash_file(path: &str) -> io::Result<String> {
     let mut file = File::open(path)?;
     let mut hasher = Sha256::new();
     let mut buffer = [0; 8192];

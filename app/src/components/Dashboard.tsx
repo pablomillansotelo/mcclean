@@ -30,10 +30,10 @@ export function Dashboard({ scanning, hasScanned, results, apps, brew, devItems,
 
   const [lastScan, setLastScan] = useState<string | null>(null);
   const [progress, setProgress] = useState({
-    system: { progress: 0, status: "Waiting..." },
-    apps: { progress: 0, status: "Waiting..." },
-    brew: { progress: 0, status: "Waiting..." },
-    devtools: { progress: 0, status: "Waiting..." },
+    system: { progress: 0, status: t('dashboard.waiting', 'Waiting...') },
+    apps: { progress: 0, status: t('dashboard.waiting', 'Waiting...') },
+    brew: { progress: 0, status: t('dashboard.waiting', 'Waiting...') },
+    devtools: { progress: 0, status: t('dashboard.waiting', 'Waiting...') },
   });
 
   useEffect(() => {
@@ -54,10 +54,10 @@ export function Dashboard({ scanning, hasScanned, results, apps, brew, devItems,
   const handleScanClick = async () => {
     // Reset progress
     setProgress({
-      system: { progress: 0, status: "Starting..." },
-      apps: { progress: 0, status: "Starting..." },
-      brew: { progress: 0, status: "Starting..." },
-      devtools: { progress: 0, status: "Starting..." },
+      system: { progress: 0, status: t('dashboard.starting', 'Starting...') },
+      apps: { progress: 0, status: t('dashboard.starting', 'Starting...') },
+      brew: { progress: 0, status: t('dashboard.starting', 'Starting...') },
+      devtools: { progress: 0, status: t('dashboard.starting', 'Starting...') },
     });
 
     onScan();
@@ -77,10 +77,10 @@ export function Dashboard({ scanning, hasScanned, results, apps, brew, devItems,
         <div className="scan-card" style={{ marginTop: "80px" }}>
           {scanning ? (
             <div style={{ width: "100%", maxWidth: "400px", textAlign: "left" }}>
-              <ProgressBar progress={progress.system.progress} label={`System: ${progress.system.status}`} color="#3b82f6" />
-              <ProgressBar progress={progress.apps.progress} label={`Apps: ${progress.apps.status}`} color="#10b981" />
-              <ProgressBar progress={progress.brew.progress} label={`Homebrew: ${progress.brew.status}`} color="#f59e0b" />
-              <ProgressBar progress={progress.devtools.progress} label={`Developer: ${progress.devtools.status}`} color="#8b5cf6" />
+              <ProgressBar progress={progress.system.progress} label={`${t('dashboard.systemPrefix', 'System')}: ${progress.system.status}`} color="#3b82f6" />
+              <ProgressBar progress={progress.apps.progress} label={`${t('dashboard.appsPrefix', 'Apps')}: ${progress.apps.status}`} color="#10b981" />
+              <ProgressBar progress={progress.brew.progress} label={`${t('dashboard.homebrewPrefix', 'Homebrew')}: ${progress.brew.status}`} color="#f59e0b" />
+              <ProgressBar progress={progress.devtools.progress} label={`${t('dashboard.devPrefix', 'Developer')}: ${progress.devtools.status}`} color="#8b5cf6" />
             </div>
           ) : (
             <>

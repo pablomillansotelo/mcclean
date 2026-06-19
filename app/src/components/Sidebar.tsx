@@ -1,4 +1,4 @@
-import { LayoutDashboard, HardDrive, Trash2, Settings, AppWindow, Coffee, Code2, Zap, Shield, Grid, Files, Activity } from "lucide-react";
+import { LayoutDashboard, HardDrive, Trash2, Settings, AppWindow, Coffee, Code2, Zap, Shield, Grid, Activity } from "lucide-react";
 import "./Sidebar.css";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,7 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
       title: t('sidebar.general'),
       items: [
         { id: "dashboard", label: t('sidebar.overview'), icon: LayoutDashboard },
-        { id: "processes", label: t('sidebar.processes', 'Procesos'), icon: Activity }
+        { id: "processes", label: t('sidebar.processes'), icon: Activity }
       ]
     },
     {
@@ -25,8 +25,7 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
       items: [
         { id: "cleanup", label: t('sidebar.cleanup'), icon: Trash2 },
         { id: "large-files", label: t('sidebar.largeFiles'), icon: HardDrive },
-        { id: "duplicates", label: t('sidebar.duplicates'), icon: Files },
-        { id: "spacelens", label: t('sidebar.spaceLens'), icon: Grid },
+        { id: "folder-analysis", label: t('sidebar.folderAnalysis'), icon: Grid },
       ]
     },
     {
@@ -55,7 +54,8 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
 
   return (
     <div className="sidebar">
-      <div className="draggable" style={{ height: "24px", position: "absolute", top: 0, width: "100%" }} />
+      <div className="draggable" data-tauri-drag-region style={{ height: "24px", position: "absolute", top: 0, width: "100%" }} />
+      <div className="sidebar-title" style={{ marginBottom: '0px', marginTop: '15px'}}>mcclean</div>
 
       <nav>
         {navGroups.map((group, idx) => (

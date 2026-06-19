@@ -1,4 +1,4 @@
-import { ScanResult, StartupItem, SystemStats } from "./types";
+import { ScanResult, StartupItem, SystemStats, FolderAnalysisResult } from "./types";
 
 export interface DuplicateGroup {
   hash: string;
@@ -31,6 +31,7 @@ export interface ElectronAPI {
   scanDuplicates: (path?: string) => Promise<DuplicateGroup[]>;
   scanSpaceLens: () => Promise<ScanResult[]>;
   analyzeDirectory: (path: string) => Promise<ScanResult[]>;
+  deepAnalyzeDirectory: (path: string) => Promise<FolderAnalysisResult>;
   getTrashSize: () => Promise<number>;
   moveToTrash: (path: string) => Promise<boolean>;
   getStoreValue: (key: string) => Promise<unknown>;

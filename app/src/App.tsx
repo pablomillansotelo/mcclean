@@ -8,12 +8,11 @@ import { Applications } from "./components/Applications";
 import { Homebrew } from "./components/Homebrew";
 import { DevCleaner } from "./components/DevCleaner";
 import { Privacy } from "./components/Privacy";
-import { SpaceLens } from "./components/SpaceLens";
 import { SystemCleaner } from "./components/SystemCleaner";
 import { Startup } from "./components/Startup";
 import { ProcessManager } from "./components/ProcessManager";
-import { DuplicateFinder } from "./components/DuplicateFinder";
-import { ScanResult, StartupItem } from "./types";
+import { FolderAnalysis } from "./components/FolderAnalysis";
+import { ScanResult, StartupItem, FolderAnalysisResult } from "./types";
 
 
 function App() {
@@ -39,16 +38,13 @@ function App() {
   const [systemItems, setSystemItems] = useState<ScanResult[]>([]); // System Cleaner State
 
   // Persistent state for interactive tools
-  const [duplicateResults, setDuplicateResults] = useState<any[]>([]);
-  const [isScanningDuplicates, setIsScanningDuplicates] = useState(false);
   const [isScanningDevTools, setIsScanningDevTools] = useState(false);
-  const [spaceLensHistory, setSpaceLensHistory] = useState<string[]>([]);
-  const [spaceLensData, setSpaceLensData] = useState<ScanResult[]>([]);
+  const [folderAnalysisHistory, setFolderAnalysisHistory] = useState<string[]>([]);
+  const [folderAnalysisData, setFolderAnalysisData] = useState<FolderAnalysisResult | null>(null);
 
   const handleScan = async () => {
     setScanning(true);
     setHasScanned(true);
-    setIsScanningDuplicates(true);
     try {
       // Parallel scan
       const [systemData, files, appsData, brewData, devData, startupData, privacyData] = await Promise.all([
@@ -61,14 +57,7 @@ function App() {
         window.electron.scanPrivacy().catch(e => { console.error("Privacy scan error:", e); return []; }),
       ]);
 
-      // Fire duplicate scan in the background so it doesn't block the dashboard
-      window.electron.scanDuplicates().then(dupData => {
-        setDuplicateResults(dupData || []);
-        setIsScanningDuplicates(false);
-      }).catch(e => {
-        console.error("Duplicates scan error:", e);
-        setIsScanningDuplicates(false);
-      });
+      // Remove duplicate scan from here to not entorpecer el disco
 
       setSystemItems(systemData || []);
       setResults(files || []);
@@ -103,8 +92,8 @@ function App() {
         return <SystemCleaner data={systemItems} setData={setSystemItems} />;
       case "large-files":
         return <LargeFiles results={results} onDelete={handleDelete} />;
-      case "duplicates":
-        return <DuplicateFinder results={duplicateResults} setResults={setDuplicateResults} isScanning={isScanningDuplicates} />;
+      case "folder-analysis":
+        return <FolderAnalysis data={folderAnalysisData} setData={setFolderAnalysisData} pathHistory={folderAnalysisHistory} setPathHistory={setFolderAnalysisHistory} />;
       case "apps":
         return <Applications data={apps} setData={setApps} hasScanned={hasScanned} globalScanning={scanning} />;
       case "homebrew":
@@ -128,8 +117,6 @@ function App() {
             });
           }}
         />;
-      case "spacelens":
-        return <SpaceLens data={spaceLensData} setData={setSpaceLensData} pathHistory={spaceLensHistory} setPathHistory={setSpaceLensHistory} />;
       case "startup":
         return <Startup items={startupItems} setItems={setStartupItems} hasScanned={hasScanned} globalScanning={scanning} />;
       case "privacy":
@@ -147,7 +134,7 @@ function App() {
     <div className="app-container">
       <Sidebar activeView={activeView} onNavigate={setActiveView} />
       <main className="main-content">
-        <div className="draggable" style={{ height: "40px", width: "100%", position: "absolute", top: 0, left: 0 }} />
+        <div className="draggable" data-tauri-drag-region style={{ height: "40px", width: "100%", position: "absolute", top: 0, left: 0 }} />
         {renderView()}
       </main>
     </div>

@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
 import { listen, UnlistenFn } from '@tauri-apps/api/event';
-import { ScanResult, StartupItem, SystemStats, DuplicateGroup, ProcessInfo } from './types';
+import { ScanResult, StartupItem, SystemStats, DuplicateGroup, ProcessInfo, FolderAnalysisResult } from './types';
 
 export const tauriElectronShim = {
   startScan: (path: string) => invoke<ScanResult[]>('start_scan', { path }),
@@ -23,6 +23,7 @@ export const tauriElectronShim = {
   scanDuplicates: (path?: string) => invoke<DuplicateGroup[]>('scan_duplicates', { path }),
   scanSpaceLens: () => invoke<ScanResult[]>('scan_space_lens'),
   analyzeDirectory: (path: string) => invoke<ScanResult[]>('analyze_directory', { path }),
+  deepAnalyzeDirectory: (path: string) => invoke<FolderAnalysisResult>('deep_analyze_directory', { path }),
   getTrashSize: () => invoke<number>('get_trash_size'),
   moveToTrash: (path: string) => invoke<boolean>('move_to_trash', { path }),
   getStoreValue: (key: string) => invoke<unknown>('get_store_value', { key }),

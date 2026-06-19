@@ -42,8 +42,19 @@ export interface ProcessInfo {
   cpu: number;
 }
 
+export interface DuplicateFile {
+  path: string;
+  name: string;
+  modified: string;
+}
+
 export interface DuplicateGroup {
   hash: string;
   size: number;
-  files: string[];
+  files: DuplicateFile[];
+}
+
+export interface FolderAnalysisResult {
+  space_items: ScanResult[];
+  duplicates: DuplicateGroup[];
 }

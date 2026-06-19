@@ -156,6 +156,20 @@ async fn analyze_directory(app: AppHandle, path: String) -> Result<Vec<ScanResul
 }
 
 #[tauri::command]
+async fn deep_analyze_directory(app: AppHandle, path: String) -> Result<mcclean_core::space::FolderAnalysisResult, String> {
+    mcclean_core::space::deep_analyze_directory(&path, |current_file, _items_processed| {
+        let _ = app.emit(
+            "scan-progress",
+            ProgressPayload {
+                scanId: "folder_analysis".to_string(),
+                progress: 0.0,
+                status: format!("Analizando profundidad: {}", current_file),
+            },
+        );
+    })
+}
+
+#[tauri::command]
 async fn scan_space_lens() -> Result<Vec<ScanResult>, String> {
     mcclean_core::space::scan_space_lens()
 }
@@ -279,6 +293,7 @@ pub fn run() {
             scan_duplicates,
             scan_space_lens,
             analyze_directory,
+            deep_analyze_directory,
             get_trash_size,
             move_to_trash,
             get_store_value,
