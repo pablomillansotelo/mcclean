@@ -1,15 +1,31 @@
-import { Trash2, Package } from "lucide-react";
+import { Trash2, Package, Loader2 } from "lucide-react";
 import { ScanResult } from "../types";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
 
 interface ApplicationsProps {
   data: ScanResult[];
   setData: React.Dispatch<React.SetStateAction<ScanResult[]>>;
+  hasScanned?: boolean;
+  globalScanning?: boolean;
 }
 
-export function Applications({ data: apps, setData: setApps }: ApplicationsProps) {
+export function Applications({ data: apps, setData: setApps, hasScanned, globalScanning }: ApplicationsProps) {
   const { t } = useTranslation();
+  const [localScanning, setLocalScanning] = useState(false);
 
+  useEffect(() => {
+    if (!hasScanned && apps.length === 0 && !globalScanning && !localScanning) {
+      setLocalScanning(true);
+      window.electron.scanApps().then(data => {
+        setApps(data || []);
+        setLocalScanning(false);
+      }).catch(e => {
+        console.error(e);
+        setLocalScanning(false);
+      });
+    }
+  }, [hasScanned, apps.length, globalScanning]);
   const handleUninstall = async (appPath: string) => {
     // 1. Check for associated files
     const appName = appPath.split("/").pop()?.replace(".app", "") || "";
@@ -48,7 +64,16 @@ export function Applications({ data: apps, setData: setApps }: ApplicationsProps
       </div>
 
       <div className="file-list">
-        {apps.map((app, i) => (
+        {(globalScanning || localScanning) ? (
+          <div className="empty-state flex flex-col items-center justify-center gap-4 py-10">
+            <Loader2 className="animate-spin text-accent" size={32} />
+            <p className="text-white/70">{t('applications.scanning', 'Escaneando aplicaciones...')}</p>
+          </div>
+        ) : apps.length === 0 ? (
+          <div className="empty-state py-10 text-center opacity-50">
+            {t('applications.noItems', 'No se encontraron aplicaciones')}
+          </div>
+        ) : apps.map((app, i) => (
           <div key={i} className="file-item">
             <div className="file-icon">
               <Package size={20} />

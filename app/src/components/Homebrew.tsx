@@ -2,14 +2,31 @@ import { Trash2, Coffee, Download, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { ScanResult } from "../types";
 import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
 
 interface HomebrewProps {
   data: ScanResult[];
   setData: React.Dispatch<React.SetStateAction<ScanResult[]>>;
+  hasScanned?: boolean;
+  globalScanning?: boolean;
 }
 
-export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps) {
+export function Homebrew({ data: packages, setData: setPackages, hasScanned, globalScanning }: HomebrewProps) {
   const { t } = useTranslation();
+  const [localScanning, setLocalScanning] = useState(false);
+
+  useEffect(() => {
+    if (!hasScanned && packages.length === 0 && !globalScanning && !localScanning) {
+      setLocalScanning(true);
+      window.electron.scanBrew().then(data => {
+        setPackages(data || []);
+        setLocalScanning(false);
+      }).catch(e => {
+        console.error(e);
+        setLocalScanning(false);
+      });
+    }
+  }, [hasScanned, packages.length, globalScanning]);
 
   const handleUninstall = async (name: string) => {
     if (confirm(t('homebrew.confirmUninstall', { name }))) {
@@ -72,7 +89,16 @@ export function Homebrew({ data: packages, setData: setPackages }: HomebrewProps
       </div>
 
       <div className="file-list">
-        {displayedPackages.map((pkg, i) => (
+        {(globalScanning || localScanning) ? (
+          <div className="empty-state flex flex-col items-center justify-center gap-4 py-10">
+            <Loader2 className="animate-spin text-accent" size={32} />
+            <p className="text-white/70">{t('homebrew.scanning', 'Escaneando paquetes de Homebrew...')}</p>
+          </div>
+        ) : packages.length === 0 ? (
+          <div className="empty-state py-10 text-center opacity-50">
+            {t('homebrew.noItems', 'No se encontraron paquetes de Homebrew')}
+          </div>
+        ) : displayedPackages.map((pkg, i) => (
           <div key={i} className="file-item">
             <div className="file-icon">{pkg.type === "Cask" ? <Download size={20} /> : <Coffee size={20} />}</div>
             <div className="file-info">

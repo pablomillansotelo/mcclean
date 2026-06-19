@@ -1,16 +1,32 @@
-import { Zap } from "lucide-react";
+import { Zap, Loader2 } from "lucide-react";
 import { StartupItem } from "../types";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface StartupProps {
   items: StartupItem[];
   setItems: React.Dispatch<React.SetStateAction<StartupItem[]>>;
+  hasScanned?: boolean;
+  globalScanning?: boolean;
 }
 
-export function Startup({ items, setItems }: StartupProps) {
+export function Startup({ items, setItems, hasScanned, globalScanning }: StartupProps) {
   const { t } = useTranslation();
   const [toggling, setToggling] = useState<string | null>(null);
+  const [localScanning, setLocalScanning] = useState(false);
+
+  useEffect(() => {
+    if (!hasScanned && items.length === 0 && !globalScanning && !localScanning) {
+      setLocalScanning(true);
+      window.electron.scanStartupItems().then(data => {
+        setItems(data || []);
+        setLocalScanning(false);
+      }).catch(e => {
+        console.error(e);
+        setLocalScanning(false);
+      });
+    }
+  }, [hasScanned, items.length, globalScanning]);
 
   const handleToggle = async (item: StartupItem) => {
     setToggling(item.path);
@@ -31,7 +47,16 @@ export function Startup({ items, setItems }: StartupProps) {
       </div>
 
       <div className="file-list">
-        {items.map((item, i) => (
+        {(globalScanning || localScanning) ? (
+          <div className="empty-state flex flex-col items-center justify-center gap-4 py-10">
+            <Loader2 className="animate-spin text-accent" size={32} />
+            <p className="text-white/70">{t('startup.scanning', 'Escaneando elementos de inicio...')}</p>
+          </div>
+        ) : items.length === 0 ? (
+          <div className="empty-state py-10 text-center opacity-50">
+            {t('startup.noItems', 'No se encontraron elementos de inicio')}
+          </div>
+        ) : items.map((item, i) => (
           <div key={i} className="file-item" style={{ opacity: item.enabled ? 1 : 0.5 }}>
             <div className="file-icon">
               <Zap size={20} color={item.enabled ? "#eab308" : "#888"} />
@@ -63,7 +88,6 @@ export function Startup({ items, setItems }: StartupProps) {
             </button>
           </div>
         ))}
-        {items.length === 0 && <div style={{ padding: "20px", textAlign: "center", opacity: 0.5 }}>{t('startup.noItems')}</div>}
       </div>
     </div>
   );

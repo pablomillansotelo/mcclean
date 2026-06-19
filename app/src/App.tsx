@@ -106,9 +106,9 @@ function App() {
       case "duplicates":
         return <DuplicateFinder results={duplicateResults} setResults={setDuplicateResults} isScanning={isScanningDuplicates} />;
       case "apps":
-        return <Applications data={apps} setData={setApps} />;
+        return <Applications data={apps} setData={setApps} hasScanned={hasScanned} globalScanning={scanning} />;
       case "homebrew":
-        return <Homebrew data={brew} setData={setBrew} />;
+        return <Homebrew data={brew} setData={setBrew} hasScanned={hasScanned} globalScanning={scanning} />;
       case "devtools":
         return <DevCleaner 
           data={devItems} 
@@ -131,7 +131,7 @@ function App() {
       case "spacelens":
         return <SpaceLens data={spaceLensData} setData={setSpaceLensData} pathHistory={spaceLensHistory} setPathHistory={setSpaceLensHistory} />;
       case "startup":
-        return <Startup items={startupItems} setItems={setStartupItems} />;
+        return <Startup items={startupItems} setItems={setStartupItems} hasScanned={hasScanned} globalScanning={scanning} />;
       case "privacy":
         return <Privacy data={privacyItems} setData={setPrivacyItems} />;
       case "processes":
